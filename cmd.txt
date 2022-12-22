@@ -1,0 +1,152 @@
+Write-Host "About to Create the directory" -ForegroundColor Green
+
+mkdir Reactivities
+cd Reactivities
+
+Write-Host "About to create the solution and projects" -ForegroundColor Green
+dotnet new sln
+dotnet new webapi -n API
+dotnet new classlib -n Application
+dotnet new classlib -n Domain
+dotnet new classlib -n Persistence
+
+Write-Host "Adding projects to the solution" -ForegroundColor Green
+dotnet sln add API/API.csproj
+dotnet sln add Application/Application.csproj
+dotnet sln add Domain/Domain.csproj
+dotnet sln add Persistence/Persistence.csproj
+
+Write-Host "Adding project references" -ForegroundColor Green
+cd API
+dotnet add reference ../Application/Application.csproj
+cd ../Application
+dotnet add reference ../Domain/Domain.csproj
+dotnet add reference ../Persistence/Persistence.csproj
+cd ../Persistence
+dotnet add reference ../Domain/Domain.csproj
+cd ..
+
+Write-Host "Executing dotnet restore" -ForegroundColor Green
+dotnet restore
+
+Write-Host "Finished!" -ForegroundColor Green
+
+
+/************************************************************************************/
+
+--install dotnet 7 SDK, node JS 18.12.1 LTS
+
+-- install node version management (nvm): it allows to swicht from npm version to another
+link: https://joachim8675309.medium.com/installing-node-js-with-nvm-4dc469c977d9
+      https://chocolatey.org/install
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    choco install cmder
+    choco install nvm
+    refreshenv
+
+
+/************************************************************************************/
+before start, we must know how to choose the correct .net version we want to use for our project.
+In order to change the dotnet version, we must do:
+
+You can do this with a global.json file in the root of your project:
+
+Verify the list of SDKs on your machine:
+    dotnet --list-sdks
+You'll see a list like this.
+
+2.1.100 [C:\Program Files\dotnet\sdk]
+2.1.101 [C:\Program Files\dotnet\sdk]
+2.1.103 [C:\Program Files\dotnet\sdk]
+2.1.104 [C:\Program Files\dotnet\sdk]
+[...lines omitted...]
+2.1.601 [C:\Program Files\dotnet\sdk]
+2.2.101 [C:\Program Files\dotnet\sdk]
+3.0.100-preview3-010431 [C:\Program Files\dotnet\sdk]
+Create a folder to be the root of your project, where you are going to run dotnet new.
+In that folder, run this command: dotnet new globaljson
+The result will look something like this:
+
+{
+  "sdk": {
+    "version": "3.0.100-preview3-010431"
+  }
+}
+In version, replace the 3.0.100-preview3-010431 with the version you prefer from the --list-sdks list. For example:
+{
+  "sdk": {
+    "version": "2.2.101"
+  }
+}
+Run dotnet --version to verify. You should see:
+2.2.101
+
+
+/************************************************************************************/
+commands to create the project from git cli:
+
+    mkdir Reactivities
+    cd Reactivities
+    dotnet new sln              #(this creates Reactivities.sln file)
+    dotnet new webapi -n API    #(this creates a new webapi project folder named API and files)
+    dotnet new classlib -n Application
+    dotnet new classlib -n Domain
+    dotnet new classlib -n Persistence 
+
+    dotnet sln add API/API.csproj
+    dotnet sln add Application
+    dotnet sln add Domain
+    dotnet sln add Persistence
+
+    cd API 
+    dotnet add reference ../Application
+    cd ..; cd Application
+    dotnet add reference ../Domain
+    dotnet add reference ../Persistence
+
+    cd ..; cd Persistence
+    dotnet add reference ../Domain
+
+    dotnet run
+    dotnet watch run
+
+  
+  /************************************************************************************/
+  Install MicrosoftEntityFrameworkCore.sqlite v5.01 into the Persistence class library project 
+  (same SDK version as API, Domain, Persistence projects) via NUGET gallery
+
+MAKE SURE TO RUN THE APP ALMOST ONE TIME AFTER MicrosoftEntityFrameworkCore install
+    dotnet run
+    dotnet watch run
+
+STOP the Application using Ctrl+C
+Then, in order to create the DB, we will create a migration using ef
+cd Reactivities
+INSTALL DOTNET EF
+    dotnet tool install --global dotnet-ef --version 5.0.1
+    dotnet tool list --global
+    dotnet ef -h
+    dotnet ef migrations add InitialCreates -p Persistence -s API/ #this command creates a migration.
+to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s StartupProjectName/
+
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  

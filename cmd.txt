@@ -1,40 +1,8 @@
-Write-Host "About to Create the directory" -ForegroundColor Green
-
-mkdir Reactivities
-cd Reactivities
-
-Write-Host "About to create the solution and projects" -ForegroundColor Green
-dotnet new sln
-dotnet new webapi -n API
-dotnet new classlib -n Application
-dotnet new classlib -n Domain
-dotnet new classlib -n Persistence
-
-Write-Host "Adding projects to the solution" -ForegroundColor Green
-dotnet sln add API/API.csproj
-dotnet sln add Application/Application.csproj
-dotnet sln add Domain/Domain.csproj
-dotnet sln add Persistence/Persistence.csproj
-
-Write-Host "Adding project references" -ForegroundColor Green
-cd API
-dotnet add reference ../Application/Application.csproj
-cd ../Application
-dotnet add reference ../Domain/Domain.csproj
-dotnet add reference ../Persistence/Persistence.csproj
-cd ../Persistence
-dotnet add reference ../Domain/Domain.csproj
-cd ..
-
-Write-Host "Executing dotnet restore" -ForegroundColor Green
-dotnet restore
-
-Write-Host "Finished!" -ForegroundColor Green
-
-
 /************************************************************************************/
-
 --install dotnet 7 SDK, node JS 18.12.1 LTS
+--install from NUGET packet manager: Microsoft.EntityFrameworkCore.Sqlite
+-- Install from dotnet cli: dotnet tool install --global dotnet-ef --version 7.0.1
+
 
 -- install node version management (nvm): it allows to swicht from npm version to another
 link: https://joachim8675309.medium.com/installing-node-js-with-nvm-4dc469c977d9
@@ -43,7 +11,6 @@ link: https://joachim8675309.medium.com/installing-node-js-with-nvm-4dc469c977d9
     choco install cmder
     choco install nvm
     refreshenv
-
 
 /************************************************************************************/
 before start, we must know how to choose the correct .net version we want to use for our project.

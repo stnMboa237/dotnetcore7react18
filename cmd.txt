@@ -97,7 +97,22 @@ INSTALL DOTNET EF
 to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s StartupProjectName/
 
   /************************************************************************************/
+  HOW TO RUN OUR PROJECT:
+  To build and run our .net project, just run this command from the CLI:
+    dotnet watch --no-hot-reload
+  this will reload the app after every file update
+
   /************************************************************************************/
+  HOW TO CREATE THE GIT REPO + GITIGNORE FILE
+  in order to list all availables commands for dotnet cli, just type: 
+    dotnet new -l
+
+  in order to create a new GIT repo for our project, just type from the CLI:
+    git status #this will tell us that our current folder is not a GIT repository. 
+    git init #this will initiate a GIT repo for our project
+  
+  in order to upload into our new repo only "imports" files of our project, we can create a gitIgnore file for a dotnet project:
+    dotnet new gitignore
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

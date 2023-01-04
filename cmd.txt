@@ -113,7 +113,20 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   
   in order to upload into our new repo only "imports" files of our project, we can create a gitIgnore file for a dotnet project:
     dotnet new gitignore
+
   /************************************************************************************/
+  HOW TO CREATE THE CLIENT APP?
+  To create the client app using REACT, we need to run the following cmd:
+    npx create-react-app client-app --use-npm --template typescript
+    npx create-react-app <app-name> --use-npm --template typescript
+
+  PS: en cas de soucis, je dois me souvenir que les versions de node (node -v) et de NPM (npm -v )
+  sont différentes de celles use dans le tuto.
+
+  En cas de soucis plus en avant, il faudrait installer les mêmes versions que dans le tuto á savoir:
+    node version 16.16.0
+    npm  version 8.11.0 
+  et switcher sur ces dernières!!!
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

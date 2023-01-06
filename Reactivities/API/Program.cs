@@ -13,6 +13,13 @@ builder.Services.AddDbContext<DataContext>(opt => {
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// on est libre de disposer les services comme on veut.
+builder.Services.AddCors(opt => {
+    opt.AddPolicy("CorsPolicy", policy => {
+        policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,9 +29,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//attention á la disposition des middleware: 
+//on veut que les Cors Policy soit injectées avant que l'app n'envoit 
+//la requete en pre-flight et surtout avant L'AUTHENTIFICATION
+app.UseCors("CorsPolicy");
 
-//app.UseAuthorization();
+// app.UseHttpsRedirection();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

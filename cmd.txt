@@ -127,6 +127,12 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
     node version 16.16.0
     npm  version 8.11.0 
   et switcher sur ces dernières!!!
+
+  Remember to install chrome extension REACT DEVELOPPER TOOLS 
+  install AXIOS for fetching/retrieving data from our API. An alternative is FETCH
+  To install AXIOS,run the following cmd:
+    npm install axios
+    
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

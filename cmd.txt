@@ -132,7 +132,8 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   install AXIOS for fetching/retrieving data from our API. An alternative is FETCH
   To install AXIOS,run the following cmd:
     npm install axios
-    
+  
+  install semantic-ui: npm install semantic-ui-react semantic-ui-css
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

@@ -17,14 +17,12 @@ namespace Application.Activities
         public class Handler : IRequestHandler<Query, List<Activity>>
         {
             private readonly DataContext _context;
-            private readonly ILogger<List> _logger;
-            public Handler(DataContext context, ILogger<List> logger)
+            public Handler(DataContext context)
             {
-                _logger = logger;
                 _context = context;
             }
 
-            public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<Activity>> Handle(Query request, CancellationToken token)
             {
                 return await _context.Activities.ToListAsync();
             }

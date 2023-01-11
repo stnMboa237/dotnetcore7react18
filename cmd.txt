@@ -135,6 +135,11 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   
   install semantic-ui: npm install semantic-ui-react semantic-ui-css
   /************************************************************************************/
+  HOW TO IMPLEMENT CQRS PATTERN?  
+  In order to communicate between different level of our app, we need a mediator.
+  We must install for 'Application' Project MediatR.Extensions.Microsoft.DependencyInjection v.11.0.0 by Jimmy Bogard from NugetGallery
+ 
+
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

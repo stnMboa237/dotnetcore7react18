@@ -139,7 +139,7 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   In order to communicate between different level of our app, we need a mediator.
   We must install for 'Application' Project MediatR.Extensions.Microsoft.DependencyInjection v.11.0.0 by Jimmy Bogard from NugetGallery
  
-
+  Install Automapper AutoMapper.Extensions.Microsoft.DependencyInjection v.12.0.0 by Jimmy Bogard into our 'Application' project
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

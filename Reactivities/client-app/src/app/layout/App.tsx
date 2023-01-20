@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Container } from 'semantic-ui-react';
 import { Activity } from '../models/activity';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import {v4 as uuid} from 'uuid';
+import agent from '../api/agent';
 
 function App() {
   // Ici, on def 2 variables: activities (responsable de garder dans le state les objets take du back)
@@ -18,9 +18,8 @@ function App() {
   // Ici, useEffect nous permet de faire des actions quand notre appli se lance.
   // En l'occurence, on appelle la methode getActivities du back
   useEffect(() => {
-    axios.get<Activity[]>('http://localhost:5000/api/activities')
-      .then(response => {
-        setActivities(response.data);
+    agent.Actvities.list().then(response => {
+        setActivities(response);
       })
   }, []); // [] permet d'executer la 'get' juste une fois. sinon, elle serait lancer n fois.
 

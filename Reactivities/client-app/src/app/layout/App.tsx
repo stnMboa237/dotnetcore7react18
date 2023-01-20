@@ -11,6 +11,8 @@ function App() {
   // [] initialise le state comme un array vide afin d'eviter une erreur lors du activities.map
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
+  // const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
 
   // Ici, useEffect nous permet de faire des actions quand notre appli se lance.
   // En l'occurence, on appelle la methode getActivities du back
@@ -29,14 +31,26 @@ function App() {
     setSelectedActivity(undefined);
   }
 
+  function handleFormOpen(id?: string){
+    id ? handleSelectActivity(id) : handleCancelSelectedActivity();
+    setEditMode(true);
+  }
+
+  function handleFormClose(){
+    setEditMode(false);
+  }
+
   return (
     <>
-      <NavBar />
+      <NavBar openForm={handleFormOpen}/>
       <Container style={{ marginTop: '7em' }}>
         <ActivityDashboard activities={activities} 
           selectedActivity={selectedActivity} 
           selectActivity={handleSelectActivity}
           cancelSelectActivity={handleCancelSelectedActivity}
+          editMode={editMode}
+          openForm={handleFormOpen}
+          closeForm={handleFormClose}
         />
       </Container>
     </>

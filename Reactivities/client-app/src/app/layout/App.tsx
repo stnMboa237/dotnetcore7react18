@@ -3,12 +3,14 @@ import axios from 'axios';
 import { Container, Header, List, ListItem } from 'semantic-ui-react';
 import { Activity } from '../models/activity';
 import NavBar from './NavBar';
+import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 
 function App() {
   // Ici, on def 2 variables: activities (responsable de garder dans le state les objets take du back)
   // et setActivities (responsable de l'update des objets Activity recupérer du back)
   // [] initialise le state comme un array vide afin d'eviter une erreur lors du activities.map
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
 
   // Ici, useEffect nous permet de faire des actions quand notre appli se lance.
   // En l'occurence, on appelle la methode getActivities du back
@@ -18,17 +20,24 @@ function App() {
         setActivities(response.data);
       })
   }, []); // [] permet d'executer la 'get' juste une fois. sinon, elle serait lancer n fois.
+
+  function handleSelectActivity(id: string){
+    setSelectedActivity(activities.find(x => x.id === id));
+  }
+
+  function handleCancelSelectedActivity(){
+    setSelectedActivity(undefined);
+  }
+
   return (
     <>
       <NavBar />
-      <Container style={{marginTop:'7em'}}>
-        <List>
-          {activities.map((activity) => (
-            <ListItem key={activity.id}>
-              {activity.title}
-            </ListItem>
-          ))}
-        </List>
+      <Container style={{ marginTop: '7em' }}>
+        <ActivityDashboard activities={activities} 
+          selectedActivity={selectedActivity} 
+          selectActivity={handleSelectActivity}
+          cancelSelectActivity={handleCancelSelectedActivity}
+        />
       </Container>
     </>
   );

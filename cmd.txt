@@ -140,7 +140,12 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   We must install for 'Application' Project MediatR.Extensions.Microsoft.DependencyInjection v.11.0.0 by Jimmy Bogard from NugetGallery
  
   Install Automapper AutoMapper.Extensions.Microsoft.DependencyInjection v.12.0.0 by Jimmy Bogard into our 'Application' project
+
   /************************************************************************************/
+  FRONT END: How to generate GUID from the front:
+  to do this, we must install this package into the root folder of client App
+    npm install uuid
+    npm i --save-dev @types/uuid
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

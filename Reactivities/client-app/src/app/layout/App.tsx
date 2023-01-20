@@ -19,7 +19,12 @@ function App() {
   // En l'occurence, on appelle la methode getActivities du back
   useEffect(() => {
     agent.Actvities.list().then(response => {
-        setActivities(response);
+      let activities: Activity[] = [];
+      response.forEach(activity => {
+        activity.date = activity.date.split('T')[0];
+        activities.push(activity)
+      });
+        setActivities(activities);
       })
   }, []); // [] permet d'executer la 'get' juste une fois. sinon, elle serait lancer n fois.
 

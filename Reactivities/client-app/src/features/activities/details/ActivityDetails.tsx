@@ -23,7 +23,7 @@ export default function ActivityDetails({activity, cancelSelectActivity, openFor
             <Card.Content extra>
                 <ButtonGroup widths='2'>
                     <Button onClick={() => openForm(activity.id)} basic color="blue" content='Edit'/>
-                    <Button /* sans (), la fonct cancelSelectActivity n'est executé que qd on click sur cancel */ 
+                    <Button /* sans () et sans param, la fonct cancelSelectActivity n'est executé que qd on click sur cancel */ 
                         onClick={cancelSelectActivity}basic color="grey" content='Cancel'
                     />
                 </ButtonGroup>

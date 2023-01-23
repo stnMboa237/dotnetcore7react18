@@ -146,6 +146,99 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   to do this, we must install this package into the root folder of client App
     npm install uuid
     npm i --save-dev @types/uuid
+  
+  /************************************************************************************/
+  HOW TO MANAGE THE STATE OF REACT?
+  In order to manage the state, we can use MobX or 'MobX React Lite'. Une alternative serait de use react Redux
+  Each component could communicate with the state via The 'React Context'.
+
+  MobX uses classes to store the state. we create classes for each store we create. To change the value of a property
+  which is an 'observable', we need action.
+    Why MobeX?
+    - It's written into TypeScript. So it is a good approach for our project
+    - It's use Observables(c'est le futur des 'promises' en javascript. contrairemement aux promises qui sont ponctuelles 
+      sans suivies, il est possible de suivre les eventuelles changement d'etat de nos variables 'OBSERVABLES')
+    - It's use action. (actions change the state of Observables)
+    - Computed properties
+    - Reactions
+    - Autorun
+  Reaction is a benefit of use of MobX. A reaction is an action to do when the state of the property changes.
+
+  example:
+
+  import { reaction, makeAutoObservable, action, computed, makeOservable, observable} from 'mobx'
+  import {createContext} from "react"
+
+  class DemoStore{
+    firstName = 'Bob',
+    lastName = 'Smith'
+  }
+
+  Constructor(){
+    
+    /*makeOservable(this, {
+      firstName: observable,
+      lastName: observable,
+      setFirstName: action,
+      fullName: computed
+    })*/
+    makeAutoObservable(this);
+    
+    /*reaction: on doit preciser dans une reaction le param qu'on veut 'observer' ainsi que la fonction/reaction a faire
+    quand ce param observer change d'etat ou de valeur
+    */
+    reaction(
+      () => this.firstName,  /*observabele param*/
+      (firstName) => console.log(firstName) /*action to do: log into the console firstName everytime it value change's*/
+    )
+  }
+
+  /*action*/
+  setFirstName = (name: string) => {
+    this.firstName = name;
+  }
+
+  /*computed property: it allows us to get a new Property from our store properties*/
+  get fullName = () => {
+    return this.firstName + ' ' + this.lastName;
+  }
+
+  export default createContext(new DemoStore());
+
+  -----
+
+  import React, {useContext} from 'react';
+  import DemoStore from '../app/demoStore';
+
+  export default function Demo(){
+    const demoStore = useContext(DemoStore);
+    const {fullName} = demoStore;
+
+    return (
+      <div>
+        <h1>Hello {fullName}<h1/>
+      <div/>
+    )
+  }
+  -----
+  
+  /************************************************************************************/
+  HOW TO INSTALL MobX and 'MobX React Lite'
+  Just run the following cmd:
+    npm install mobx mobx-react-lite
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
+  /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

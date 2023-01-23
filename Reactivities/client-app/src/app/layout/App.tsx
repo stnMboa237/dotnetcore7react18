@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Container } from 'semantic-ui-react';
+import { Button, Container } from 'semantic-ui-react';
 import { Activity } from '../models/activity';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import { v4 as uuid } from 'uuid';
 import agent from '../api/agent';
 import LoadingComponent from './loadingComponent';
+import { useStore } from '../stores/store';
+import { observer } from 'mobx-react-lite';
 
 function App() {
+
+  const {activityStore} = useStore()
+
   // Ici, on def 2 variables: activities (responsable de garder dans le state les objets take du back)
   // et setActivities (responsable de l'update des objets Activity recupérer du back)
   // [] initialise le state comme un array vide afin d'eviter une erreur lors du activities.map
@@ -86,6 +91,8 @@ function App() {
     <>
       <NavBar openForm={handleFormOpen} />
       <Container style={{ marginTop: '7em' }}>
+        <h2>{activityStore.title}</h2>
+        <Button content='Add exclamation' positive onClick={activityStore.setTitle}/>
         <ActivityDashboard activities={activities}
           selectedActivity={selectedActivity}
           selectActivity={handleSelectActivity}
@@ -102,4 +109,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);

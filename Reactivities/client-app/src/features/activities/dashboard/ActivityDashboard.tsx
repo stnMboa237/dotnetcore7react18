@@ -8,13 +8,12 @@ import ActivityList from './ActivityList';
 
 interface Props{
     activities: Activity[];
-    createOrEdit: (activity : Activity) => void; 
     deleteActivity: (id: string) => void;
     submitting: boolean;
 }
 
 /*observer needs a function as parameter */
-export default observer(function ActivityDashboard({createOrEdit, deleteActivity, submitting} : Props) {
+export default observer(function ActivityDashboard({activities, deleteActivity, submitting} : Props) {
     
     const {activityStore} = useStore();
     const {selectedActivity, editMode} = activityStore;
@@ -23,7 +22,7 @@ export default observer(function ActivityDashboard({createOrEdit, deleteActivity
         <Grid>
             <Grid.Column width='10'>
                 <ActivityList 
-                    activities={activityStore.activities} 
+                    activities={activities} 
                     deleteActivity={deleteActivity}
                     submitting={submitting}
                 />
@@ -36,10 +35,7 @@ export default observer(function ActivityDashboard({createOrEdit, deleteActivity
                 }
                 {
                     editMode &&
-                    <ActivityForm 
-                        createOrEdit={createOrEdit} 
-                        submitting={submitting}
-                    />
+                    <ActivityForm />
                 }
             </Grid.Column>
         </Grid>

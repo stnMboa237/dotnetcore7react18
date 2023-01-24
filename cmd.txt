@@ -226,7 +226,24 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   HOW TO INSTALL MobX and 'MobX React Lite'
   Just run the following cmd:
     npm install mobx mobx-react-lite
+
   /************************************************************************************/
+  HOW TO ROUTE REACT APPS?
+    <BrowserRouter> we will surround our app with a <BrowserRouter> component inside our app, 
+      we will use <Route> component which will load the particular component called during the navigation inside the app
+    <Link> we urround a button with a <Link> component for example
+    <NavLink> we use <NavLink> to make a button unactive when a link is click on it
+    <Redirect> is an option to redirect the user
+
+  React Router hook
+    useHistory.goBack(), go(), goForward(), location(), match()... : keeps track of current location/re-renders the componentwhen
+       change detected
+    useLocation
+    useParams
+    useRouteMatch
+  
+  HOW TO  INSTALL REACT ROUTER?
+    npm install react-router-dom
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

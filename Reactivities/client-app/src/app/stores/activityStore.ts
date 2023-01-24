@@ -2,7 +2,6 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Activity } from "../models/activity";
 import {v4 as uuid} from "uuid";
-import { runInThisContext } from "vm";
 
 export default class ActivityStore{
 
@@ -93,6 +92,25 @@ export default class ActivityStore{
             runInAction(() => {
                 this.loading = false;
             })
+        }
+    }
+
+    deleteActivity = async(id: string) => {
+        this.loading = true;
+        try {
+            await agent.Actvities.delete(id);
+            runInAction(() => {
+                this.activities = [...this.activities.filter(a => a.id !== id)];
+                if(this.selectedActivity?.id === id) { /*selectedActivity.id !== null && === id  */
+                    this.cancelSelectedActivity();
+                }
+                this.loading = false;
+            });
+        } catch (error) {
+            console.log(error);
+            runInAction(() =>{
+                this.loading = false;
+            });
         }
     }
 }

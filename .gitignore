@@ -371,3 +371,5 @@ FodyWeavers.xsd
 
 # Misc
 **/client/src/app/generated/
+Reactivities/API/reactivities.db-shm
+Reactivities/API/reactivities.db-wal

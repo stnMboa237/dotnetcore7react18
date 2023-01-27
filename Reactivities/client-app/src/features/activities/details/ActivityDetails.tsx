@@ -1,11 +1,11 @@
+import { useStore } from "../../../app/stores/store";
 import { Button, ButtonGroup, Card, Image } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/loadingComponent";
-import { useStore } from "../../../app/stores/store";
 
 export default function ActivityDetails() {
 
     const {activityStore} = useStore();
-    const {selectedActivity: activity, openForm, cancelSelectedActivity } = activityStore;
+    const {selectedActivity: activity } = activityStore;
 
     if(!activity) return <LoadingComponent />;
 
@@ -23,9 +23,9 @@ export default function ActivityDetails() {
             </Card.Content>
             <Card.Content extra>
                 <ButtonGroup widths='2'>
-                    <Button onClick={() => openForm(activity.id)} basic color="blue" content='Edit'/>
+                    <Button  basic color="blue" content='Edit'/>
                     <Button /* sans () et sans param, la fonct cancelSelectActivity n'est executé que qd on click sur cancel */ 
-                        onClick={cancelSelectedActivity}basic color="grey" content='Cancel'
+                        basic color="grey" content='Cancel'
                     />
                 </ButtonGroup>
             </Card.Content>

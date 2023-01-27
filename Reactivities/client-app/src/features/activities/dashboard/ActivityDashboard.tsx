@@ -1,18 +1,14 @@
-import { useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
 import LoadingComponent from '../../../app/layout/loadingComponent';
+import { useStore } from '../../../app/stores/store';
 import ActivityList from './ActivityList';
-import ActivityDetails from '../details/ActivityDetails';
-import ActivityForm from '../form/activityForm';
-
 
 /*observer needs a function as parameter */
 export default observer(function ActivityDashboard() {
 
     const { activityStore } = useStore();
-    const { selectedActivity, editMode } = activityStore;
 
     // Ici, useEffect nous permet de faire des actions quand notre appli se lance.
     // En l'occurence, on appelle la methode getActivities du back
@@ -27,14 +23,8 @@ export default observer(function ActivityDashboard() {
             <Grid.Column width='10'>
                 <ActivityList />
             </Grid.Column>
+                <h2>Activity Filters</h2>
             <Grid.Column width='6'>
-                {
-                    /* le detail de l'activi s'affiche ssi une activité est selectionné ou undefined */
-                    selectedActivity && !editMode && <ActivityDetails />
-                }
-                {
-                    editMode && <ActivityForm />
-                }
             </Grid.Column>
         </Grid>
     )

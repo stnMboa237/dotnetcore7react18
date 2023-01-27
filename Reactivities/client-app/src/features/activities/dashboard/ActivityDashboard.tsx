@@ -9,12 +9,16 @@ import ActivityList from './ActivityList';
 export default observer(function ActivityDashboard() {
 
     const { activityStore } = useStore();
+    const { loadActivities, activityRegistry } = activityStore;
 
     // Ici, useEffect nous permet de faire des actions quand notre appli se lance.
     // En l'occurence, on appelle la methode getActivities du back
     useEffect(() => {
-        activityStore.loadActivities();
-    }, [activityStore]); // [] permet d'executer la 'get' juste une fois. sinon, elle serait lancer n fois.
+        /* */
+        if(activityRegistry.size <= 1) {
+            loadActivities();
+        }
+    }, [activityRegistry.size, loadActivities]); // [] permet d'executer la 'get' juste une fois. sinon, elle serait lancer n fois.
 
     if (activityStore.loadingInitial) return (<LoadingComponent content='Loading app' />)
 
@@ -23,7 +27,7 @@ export default observer(function ActivityDashboard() {
             <Grid.Column width='10'>
                 <ActivityList />
             </Grid.Column>
-                <h2>Activity Filters</h2>
+            <h2>Activity Filters</h2>
             <Grid.Column width='6'>
             </Grid.Column>
         </Grid>

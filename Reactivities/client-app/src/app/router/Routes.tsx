@@ -13,8 +13,8 @@ export const routes: RouteObject[] = [
             {path: '', element: <HomePage />},
             {path: 'activities', element: <ActivityDashboard />},
             {path: 'activities/:id', element: <ActivityDetails />},
-            {path: 'createActivity', element: <ActivityForm />},
-            {path: 'manage/:id', element: <ActivityForm />},
+            {path: 'createActivity', element: <ActivityForm key='create'/>}, /*unsing Key inside the same component allows react to reset the state when the component Key changed*/
+            {path: 'manage/:id', element: <ActivityForm key='manage'/>},
         ]
     }
 ]

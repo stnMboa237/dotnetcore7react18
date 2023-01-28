@@ -15,10 +15,32 @@ export default class ActivityStore {
         makeAutoObservable(this)
     }
 
-    /*action which returns activities sorted by date*/
+    /*action: returns activities sorted by date*/
     get activitiesByDate() {
         return Array.from(this.activityRegistry.values()).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
     }
+
+    /*action: returns many maps where every maps
+    is  map<key:string(date), Activity[]> */
+    get groupedActivities() {
+        return Object.entries(
+            this.activitiesByDate.reduce((activities, activity) => {
+                const date = activity.date; //get the date of the current activity: key 
+                /*then, scan the activities array. if the current act 'activity' has the same date 
+                with activity from the 'activities', then add the current activity into the array
+                else, create a new array and add it into */
+                activities[date] = activities[date] ? [...activities[date], activity] : [activity];
+                return activities;
+
+            }, {} as { [key: string]: Activity[] })
+            /*the type of the Object.entries is a map 
+            having string as key and array of activities as value
+            
+            {} as { [key: string]: Activity[] }is the initial value (entry Array of map<string, Activity[]>)
+            of the returned object*/
+        );
+    }
+
     /*exple d'arrow function asynchrone*/
     loadActivities = async () => {
         /*parlant de funct dont on wait la promise, c'est d'etre asynchrone
@@ -39,8 +61,8 @@ export default class ActivityStore {
 
     loadActivity = async (id: string) => {
         let activity = this.getActivity(id);
-        if (activity) { 
-            this.selectedActivity = activity; 
+        if (activity) {
+            this.selectedActivity = activity;
             return activity;
         }
         else {

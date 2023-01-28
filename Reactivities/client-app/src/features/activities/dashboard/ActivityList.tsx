@@ -12,19 +12,17 @@ export default observer(function ActivityList() {
         <>
             { /* we pass 2 params to map. group is the date(as string) and activities is Activity[] */
                 groupedActivities.map(([group, activities]) => (
-                <Fragment key={group}>
-                    <Header sub color='teal'>
-                        {group}
-                    </Header>
-                    <Segment>
-                        <Item.Group divided>
-                            {activities.map(activity => (
+                    <Fragment key={group}>
+                        <Header sub color='teal'>
+                            {group}
+                        </Header>
+                        {
+                            activities.map(activity => (
                                 <ActivityListItem key={activity.id} activity={activity} />
-                            ))}
-                        </Item.Group>
-                    </Segment>
-                </Fragment>
-            ))}
+                            ))
+                        }
+                    </Fragment>
+                ))}
         </>
 
     )

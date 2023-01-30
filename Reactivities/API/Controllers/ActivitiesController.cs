@@ -15,9 +15,12 @@ namespace API.Controllers
             return await Mediator.Send(new List.Query());
         }
 
+        //IActionResult allows us to return a Http Response object
         [HttpGet("{id}")] //api/activities/activityGUID
-        public async Task<ActionResult<Activity>> GetActivity(Guid id){
-            return await Mediator.Send(new Details.Query{Id = id});
+        public async Task<IActionResult> GetActivity(Guid id){
+            // var result = await Mediator.Send(new Details.Query{Id = id});
+            // return HandleResult(result);
+            return HandleResult(await Mediator.Send(new Details.Query{Id = id}));
         }
 
         [HttpPost]

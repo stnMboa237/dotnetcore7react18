@@ -244,7 +244,11 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   
   HOW TO  INSTALL REACT ROUTER?
     npm install react-router-dom
+  
   /************************************************************************************/
+  HOW TO SELECT DATE?
+  In to display and select a particular date (start date of an activity for example), we need to install react-calendar package:
+    npm install react-calendar
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

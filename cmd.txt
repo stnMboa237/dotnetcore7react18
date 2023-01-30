@@ -249,7 +249,18 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   HOW TO SELECT DATE?
   In to display and select a particular date (start date of an activity for example), we need to install react-calendar package:
     npm install react-calendar
+
   /************************************************************************************/
+  HOW TO MANAGE VALIDATION FROM THE BACK?
+  To manage validation, we can do it directly from the Model. But this is not what we want.
+  In order to improve the app, we validate our data into the Application Project. Doing that, 
+  our objects are validated before any elaboration and before sending/retrieving them from the DB.
+  WE GAIN IN EFFICIENCY.
+
+  We need to install from NugetGallery FluentValidation.AspNetCore into application project(v.11.2.2)
+  checkOut the doc: https://docs.fluentvalidation.net/en/latest/aspnet.html
+
+  for this course, we use autoValidation
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

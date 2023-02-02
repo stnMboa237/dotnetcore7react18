@@ -1,4 +1,5 @@
 using API.Extensions;
+using API.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -9,6 +10,12 @@ builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
+
+/*il est imperatif d'injecter la dépendance des exception (gestions des erreurs)
+dès que l'app compile afin que toutes les eventuelles erreurs générées pas des services
+plus bas soient gerées par le middlware
+*/
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

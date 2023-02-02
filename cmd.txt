@@ -176,16 +176,16 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
 
   Constructor(){
     
-    /*makeOservable(this, {
+    /*his, {
       firstName: observable,
       lastName: observable,
       setFirstName: action,
-      fullName: computed
+      fullName: computedmakeOservable(t
     })*/
     makeAutoObservable(this);
     
-    /*reaction: on doit preciser dans une reaction le param qu'on veut 'observer' ainsi que la fonction/reaction a faire
-    quand ce param observer change d'etat ou de valeur
+    /*reaction: on doit preciser dans une reaction le param qu'on veut 'observer' ainsi que la 
+    fonction/reaction a faire quand ce param observer change d'etat ou de valeur
     */
     reaction(
       () => this.firstName,  /*observabele param*/

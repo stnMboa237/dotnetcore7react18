@@ -261,7 +261,17 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   checkOut the doc: https://docs.fluentvalidation.net/en/latest/aspnet.html
 
   for this course, we use autoValidation
+
   /************************************************************************************/
+  HOW TO MANAGE ERROR ?
+  To manange error inside our app, we create a Middleware class (ExceptionMiddleware) which is Injected
+  into the app after the app is builded.
+
+  Then, we added a controller for testing purpose and a NavLink(/Errors) from the from.
+
+  Now, in order to notify the end user of what is happening into the app, we need to install a notification 
+  package:
+    npm install react-toastify
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

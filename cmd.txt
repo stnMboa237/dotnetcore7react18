@@ -279,6 +279,10 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
     dotnet ef database drop -s API -p Persistence
   
   /************************************************************************************/
+  HOW TO MANAGE FORMS for data handling from the frontEnd?
+    - We will use FORMIK which is one of the most popular library for react forms
+      npm install formik
+    - to validate inputs from the form, we will use Formik/Yup 
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

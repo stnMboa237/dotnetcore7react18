@@ -272,7 +272,12 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   Now, in order to notify the end user of what is happening into the app, we need to install a notification 
   package:
     npm install react-toastify
+  
   /************************************************************************************/
+  HOW TO DROP DB using Entity Framweork CLI
+  go to the solution level into your project. Open the CLI at the solution level and run the cmd:
+    dotnet ef database drop -s API -p Persistence
+  
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

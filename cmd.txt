@@ -285,6 +285,8 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
     - to validate inputs from the form, we will use Formik/Yup 
       npm install yup
       npm install @types/yup --save-dev
+    - to manage Date in the frontEnd, we will use ReactDatePicker/TimePicker package
+      npm install react-datepicker
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { makeAutoObservable, runInAction } from "mobx";
 import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
@@ -17,7 +18,7 @@ export default class ActivityStore {
 
     /*action: returns activities sorted by date*/
     get activitiesByDate() {
-        return Array.from(this.activityRegistry.values()).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+        return Array.from(this.activityRegistry.values()).sort((a, b) => a.date!.getTime() - b.date!.getTime());
     }
 
     /*action: returns many maps where every maps
@@ -25,7 +26,7 @@ export default class ActivityStore {
     get groupedActivities() {
         return Object.entries(
             this.activitiesByDate.reduce((activities, activity) => {
-                const date = activity.date; //get the date of the current activity: key 
+                const date = format(activity.date!, 'dd MMM yyyy'); //get the date of the current activity: key 
                 /*then, scan the activities array. if the current act 'activity' has the same date 
                 with activity from the 'activities', then add the current activity into the array
                 else, create a new array and add it into */
@@ -84,7 +85,7 @@ export default class ActivityStore {
     }
 
     private setActivity = (activity: Activity) => {
-        activity.date = activity.date.split('T')[0];
+        activity.date = new Date(activity.date!);
         this.activityRegistry.set(activity.id, activity);
     }
 

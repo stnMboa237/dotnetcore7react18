@@ -283,6 +283,8 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
     - We will use FORMIK which is one of the most popular library for react forms
       npm install formik
     - to validate inputs from the form, we will use Formik/Yup 
+      npm install yup
+      npm install @types/yup --save-dev
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

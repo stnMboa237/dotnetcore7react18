@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function MySelectInput(props: Props) {
-    /*helpers: allowas us to manually set the values and manually
+    /*helpers: allows us to manually set the values and manually
      set the touch status of input component */
     const [field, meta, helpers] = useField(props.name);
     return (

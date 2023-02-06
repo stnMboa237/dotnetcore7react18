@@ -26,13 +26,12 @@ export default class ActivityStore {
     get groupedActivities() {
         return Object.entries(
             this.activitiesByDate.reduce((activities, activity) => {
-                const date = format(activity.date!, 'dd MMM yyyy'); //get the date of the current activity: key 
+                const date = activity.date!.toISOString().split('T')[0]; //get the date of the current activity: key 
                 /*then, scan the activities array. if the current act 'activity' has the same date 
                 with activity from the 'activities', then add the current activity into the array
                 else, create a new array and add it into */
                 activities[date] = activities[date] ? [...activities[date], activity] : [activity];
                 return activities;
-
             }, {} as { [key: string]: Activity[] })
             /*the type of the Object.entries is a map 
             having string as key and array of activities as value

@@ -1,5 +1,7 @@
 using API.Extensions;
 using API.Middleware;
+using Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -7,8 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+/* adding our customs services before the app builds*/
 builder.Services.AddApplicationServices(builder.Configuration);
-
+builder.Services.AddIdentityServices(builder.Configuration);
+/* end app build*/
 var app = builder.Build();
 
 /*il est imperatif d'injecter la dépendance des exception (gestions des erreurs)
@@ -41,8 +45,9 @@ var services = scope.ServiceProvider;
 try
 {
     var context = services.GetRequiredService<DataContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
     await context.Database.MigrateAsync();
-    await Seed.SeedData(context);
+    await Seed.SeedData(context, userManager);
 }
 catch (Exception ex)
 {

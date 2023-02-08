@@ -287,7 +287,32 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
       npm install @types/yup --save-dev
     - to manage Date in the frontEnd, we will use ReactDatePicker/TimePicker package
       npm install react-datepicker
+
   /************************************************************************************/
+  HOW TO MANAGE AUTHENTICATION INTO THE APP?
+  Now, it's good idea to use JWT (Json Web Token) for apps based on API. 
+  Beside JWT, we will use ASP.NET Core Identity which has the following functionalities:
+    - MemberShip System
+    - Supports login stored in Identity (logins will be stored into the DB)
+    - Supports external providers (connect throught facebook for example)
+    - Comes with defautl user stores (it's create some defaults table into the DB)
+    - UserManager: maange user (create, find, get a user)
+    - SignInManager: get the user pwd as a string, and then compare it to the hashed pwd stored into the DB
+
+  To do this, we must install:
+      Microsoft.AspNetCore.Identity.EntityFrameworkCore by Microsoft version 5.0.1 from NugetGallery forthe library: Domain
+    then we create an EntityFrameworkCore migration: 
+      dotnet ef migrations add IdentityAdded -p Persistence -s API
+    from the solution reactivities.sln Level. the migration will create tables:
+      - AspNetRoles
+      - AspNetUsers
+      - AspNetRoleClaims
+      - AspNetUserClaims
+      - AspNetUserLogins
+      - AspNetUserRoles
+      - AspNetUserTokens
+      - AspNetUserRoles
+
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

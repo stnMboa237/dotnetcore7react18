@@ -326,7 +326,7 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
     -services.AddSingleton<NomDeLaMethode>(); ==> cree un service qd l'app demarre. Le sercice ainsi cree est maintenu
       en vie jusqu'a l'arret de l'appli
 
-  Install Microsoft.AspNetCore.Authentication.JwtBearer by Microsoft version 7.0.0 from NugetGallery
+  Install Microsoft.AspNetCore.Authentication.JwtBearer by Microsoft version 7.0.0 from NugetGallery into the API project
 
   /************************************************************************************/
   /************************************************************************************/

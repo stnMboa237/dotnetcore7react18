@@ -35,6 +35,8 @@ app.UseCors("CorsPolicy");
 
 // app.UseHttpsRedirection();
 
+app.UseAuthentication(); /*AUTHENTICATION CAME'S ALWAYS FIRST BEFORE AUTHORIZATION*/
+
 app.UseAuthorization();
 
 app.MapControllers();

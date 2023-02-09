@@ -15,6 +15,7 @@ namespace API.Extensions
                 /*here we are setting up the complexeness of a password from opt.Password.<option name>*/
                 opt.Password.RequireDigit = true;
                 opt.Password.RequireNonAlphanumeric = false;
+                opt.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<DataContext>();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));

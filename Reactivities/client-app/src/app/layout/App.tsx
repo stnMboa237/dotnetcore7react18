@@ -15,15 +15,13 @@ function App() {
   /*fonction executé au lancement de l'app */
   useEffect(() => {
     if (commonStore.token) {
-      userStore.getUser().finally(() => commonStore.setAppLoaded)
+      userStore.getUser().finally(() => commonStore.setAppLoaded())
     } else {
-      commonStore.setAppLoaded();
+      commonStore.setAppLoaded()
     }
-  }, [commonStore, userStore]);
+  }, [commonStore, userStore])
 
-  if(!commonStore.appLoaded){
-    return <LoadingComponent content='Loading App...'/>
-  }
+  if (!commonStore.appLoaded) return <LoadingComponent content='Loading app...' />
 
   return (
     <>

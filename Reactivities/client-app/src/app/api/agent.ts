@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosHeaders, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { Activity } from '../models/activity';
 import { User, UserFormValues } from '../models/user';
@@ -17,9 +17,9 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 axios.interceptors.request.use(config => {
     const token = store.commonStore.token;
-    if (token && config.headers) { 
-        config.headers['Authorization'] = `Bearer ${token}`;
-    } 
+    if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
 });
 
@@ -79,10 +79,10 @@ const Activities = {
 }
 
 const Account = {
-    current: () => requests.get<User>('/account'),
+    current: () => requests.get<User>('account'),
     login: (user: UserFormValues) => requests.post<User>('/account/login', user),
     register: (user: UserFormValues) => requests.post<User>('/account/register', user)
-};
+}
 
 const agent = {
     Activities,

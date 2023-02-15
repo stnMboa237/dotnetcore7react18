@@ -11,7 +11,7 @@ export default observer (function LoginForm(){
             /*afin de recuperer le bon msg d'erreur en login, on introduit la variable
             error dans 'initialValues á null et on rajoute la methode setErrors dans onSubmit'*/
             initialValues={{email: '', password: '', error: null}}
-            onSubmit={(values, {setErrors}) => userStore.loggin(values).catch(err => 
+            onSubmit={(values, {setErrors}) => userStore.login(values).catch(err => 
                 setErrors({error: 'Invalid email or password'})
             )}
         >

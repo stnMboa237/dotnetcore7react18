@@ -4,6 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Container } from 'semantic-ui-react';
 import HomePage from '../../features/activities/home/HomePage';
+import ModalContainer from '../common/modals/ModalContainer';
 import { useStore } from '../stores/store';
 import LoadingComponent from './loadingComponent';
 import NavBar from './NavBar';
@@ -15,9 +16,9 @@ function App() {
   /*fonction executé au lancement de l'app */
   useEffect(() => {
     if (commonStore.token) {
-      userStore.getUser().finally(() => commonStore.setAppLoaded())
+      userStore.getUser().finally(() => commonStore.setAppLoaded());
     } else {
-      commonStore.setAppLoaded()
+      commonStore.setAppLoaded();
     }
   }, [commonStore, userStore])
 
@@ -25,7 +26,12 @@ function App() {
 
   return (
     <>
-      {/* to use toast notifier inside our app, we must initialize it component firstly here */}
+      <ModalContainer />
+      {/*
+          to use toast notifier inside our app, we must initialize it component firstly here 
+          En plaçant un composant (ModalContainer ou ToastContainer)dans App.tsx, il sera possible de l'invoquer depuis n'importe 
+          quelle partie de l'appli.
+      */}
       <ToastContainer position='bottom-right' hideProgressBar theme='colored' />
       {
         location.pathname === '/' ? <HomePage /> : (

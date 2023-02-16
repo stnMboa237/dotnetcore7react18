@@ -21,7 +21,7 @@ export default observer(function ActivityDashboard() {
         }
     }, [activityRegistry.size, loadActivities]); // [] permet d'executer la 'get' juste une fois. sinon, elle serait lancer n fois.
 
-    if (activityStore.loadingInitial) return (<LoadingComponent content='Loading app' />)
+    if (activityStore.loadingInitial) return (<LoadingComponent content='Loading activities...' />)
 
     return (
         <Grid>

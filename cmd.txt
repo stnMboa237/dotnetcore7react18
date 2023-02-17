@@ -334,6 +334,21 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
     dotnet ef migrations add ActvityAttendee -p Persistence -s API
 
   /************************************************************************************/
+  HOW TO ACCESS TO USER/TOKEN INFOS INTO THE APPLICATION PROJECT?
+  To do this clearly, we can create a Service (in this case a new ClassLibrary project called Infrastructure) which
+  will infos on the user and token to "Application" Project.
+  
+  the into the "Application" project, we need to create an Interface
+
+  cd Reactivities
+  dotnet new classlib -n Infrastructure
+  dotnet sln add Infrastructure
+  cd Infrastructure/
+  dotnet add reference ../Application
+  cd ..
+  cd API/
+  dotnet add reference ../Infrastructure
+
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

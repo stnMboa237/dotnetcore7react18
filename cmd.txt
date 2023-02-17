@@ -329,6 +329,10 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   Install Microsoft.AspNetCore.Authentication.JwtBearer by Microsoft version 7.0.0 from NugetGallery into the API project
 
   /************************************************************************************/
+  Configure RELATION MANY TO MANY between Activity and AppUser
+  Run the migration from the Reactivities root folder:
+    dotnet ef migrations add ActvityAttendee -p Persistence -s API
+
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

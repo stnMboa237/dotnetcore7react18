@@ -6,6 +6,11 @@ namespace API.Controllers
 {
     public class ActivitiesController: BaseApiController
     {
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> Attend(Guid id){
+            return HandleResult(await Mediator.Send(new UpdateAttendance.Command{Id = id}));
+        }
+
 
         [HttpGet] //api/activities
         public async Task<IActionResult> GetActivities(){

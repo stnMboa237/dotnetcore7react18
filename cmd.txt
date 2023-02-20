@@ -350,6 +350,10 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   dotnet add reference ../Infrastructure
 
   /************************************************************************************/
+  HOW TO DROP DB TO IMPORT NEW SEED (MOCK) DATA, RUN THE following CMD FROM THE ROOT FOLDER (Reactivities)
+    dotnet ef database drop -p Persistence -s API
+    cd API
+    dotnet watch run 
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

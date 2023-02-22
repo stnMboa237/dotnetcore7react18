@@ -321,7 +321,7 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
     - service.AddScoped<NomDuService>(); ==> cree un service á chaque requete http(s)
       par exple: services.AddScoped<TokenService>(); cree un token lorsqu'une requete http de login sera lancée
     
-    -services.AddTransient<NomDeLaMethode>(); ==> cree un service pour une methode 
+    -services.AddTransient<NomDeLaMethode/NomDeLaClass>(); ==> cree un service pour une methode/class
     
     -services.AddSingleton<NomDeLaMethode>(); ==> cree un service qd l'app demarre. Le sercice ainsi cree est maintenu
       en vie jusqu'a l'arret de l'appli

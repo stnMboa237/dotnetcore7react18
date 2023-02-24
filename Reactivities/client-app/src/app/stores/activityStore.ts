@@ -2,6 +2,9 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
 import { Activity } from "../models/activity";
+import { Profile } from "../models/profile";
+import { store } from "./store";
+import UserStore from "./userStore";
 
 export default class ActivityStore {
 
@@ -83,6 +86,14 @@ export default class ActivityStore {
     }
 
     private setActivity = (activity: Activity) => {
+        const user = store.userStore.user;
+        if(user !== null || user !== undefined){
+            activity.isGoing = activity.attendees!.some(a =>{
+                return a.username === user?.username; /* le createur de l'activité part par defaut á son activité*/
+            });
+            activity.isHost = activity.hostUsername === user?.username;
+            activity.host = activity.attendees?.find(x => x.username === activity.hostUsername);
+        }
         activity.date = new Date(activity.date!);
         this.activityRegistry.set(activity.id, activity);
     }
@@ -145,6 +156,36 @@ export default class ActivityStore {
             runInAction(() => {
                 this.loading = false;
             });
+        }
+    }
+
+    updateAttendance = async() => {
+        const user = store.userStore.user;
+        this.loading = true;
+        try {
+            await agent.Activities.attend(this.selectedActivity!.id);
+            runInAction(() => {
+                if(this.selectedActivity?.isGoing) {
+                    /*si l'user actuelle participe deja (dans ce cas, l'user voudrait supprimer sa participation) 
+                        á l'activité courante, alors, on le retire de l'array des participants */
+                    this.selectedActivity.attendees = this.selectedActivity
+                        .attendees?.filter(a => a.username !== user?.username);
+                    this.selectedActivity.isGoing = false;
+                } else {
+                    /*si l'user courant ne participe pas encore á l'activité (ds ce cas, l'user click sur Join activity), 
+                        alors, on cree un Profile et l'ajoute aux participants */
+                    const attendee = new Profile(user!);
+                    this.selectedActivity?.attendees?.push(attendee);
+                    this.selectedActivity!.isGoing = true;
+                }
+                /*après l'ajout d'un participant á une activité, on update la liste des activités pour le front */
+                this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
+            });
+        } catch (error) {
+            console.log(error);
+        } finally{
+            /*en casn d'erreur/succès, on arrete le loading en settant le loading flag a false */
+            runInAction(() => this.loading = false);
         }
     }
 }

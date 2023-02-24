@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { v4 as uuid } from "uuid";
 import agent from "../api/agent";
-import { Activity } from "../models/activity";
+import { Activity, ActivityFormValues } from "../models/activity";
 import { Profile } from "../models/profile";
 import { store } from "./store";
 import UserStore from "./userStore";
@@ -106,40 +106,38 @@ export default class ActivityStore {
         this.loadingInitial = state;
     }
 
-    createActivity = async (activity: Activity) => {
-        this.loading = true;
-        activity.id = uuid();
+    createActivity = async (activity: ActivityFormValues) => {
+        const user = store.userStore.user;
+        const profile = new Profile(user!);
         try {
             await agent.Activities.create(activity);
+            const newActivity = new Activity(activity);
+            newActivity.hostUsername = user!.username;
+            newActivity.attendees = [profile];
+            this.setActivity(newActivity);
             runInAction(() => {
-                this.activityRegistry.set(activity.id, activity);
-                this.selectedActivity = activity;
-                this.editMode = false;
-                this.loading = false;
+                this.selectedActivity = newActivity;
             });
         } catch (error) {
             console.log(error);
-            runInAction(() => {
-                this.loading = false;
-            });
         }
     }
 
-    updateActivity = async (activity: Activity) => {
-        this.loading = true;
+    updateActivity = async (activity: ActivityFormValues) => {
         try {
             await agent.Activities.update(activity);
             runInAction(() => {
-                this.activityRegistry.set(activity.id, activity); /* update an existing activity based on key (id) / or insert a new one*/
-                this.selectedActivity = activity;
-                this.editMode = false;
-                this.loading = false;
+                if(activity.id) {
+                    /*spread operator ... allows us to quickly copy all or part of an existing 
+                    array or object into another array or object */
+                    let updatedActivity = { ...this.getActivity(activity.id), ...activity};
+                    /* update an existing activity based on key (id) / or insert a new one*/
+                    this.activityRegistry.set(activity.id, updatedActivity as Activity);
+                   this.selectedActivity = updatedActivity as Activity;
+                }
             });
         } catch (error) {
             console.log(error);
-            runInAction(() => {
-                this.loading = false;
-            })
         }
     }
 

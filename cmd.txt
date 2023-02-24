@@ -354,7 +354,38 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
     dotnet ef database drop -p Persistence -s API
     cd API
     dotnet watch run 
+
   /************************************************************************************/
+  SECTION 1: IMAGE STORAGE
+    - where can we store image into our application?
+    - which options do we have: 
+      * Database: store image/files into the DB presents some inconvenients like:
+        . inefficiency
+        . we must store files as BLOBs
+        . disk space could be an issue
+        . Authentication is easy
+
+      * File System: it's a good place to store files but...
+        . disk space could be an issue
+        . file permissions (read/write)
+        . recovery issue if the storage is KO
+
+      * Cloud Service: definitievely the better but expensive solution to store file used by an application
+        . cloud is higly scalable
+        . but infortunatelly, it could be more expensive depending on the size of our files
+        . it's secured with API key
+
+    - add a photo upload service 
+    - How to use a cloud service (Cloudinary API) specialized in image storage into the cloud
+      to add Cloudinary into our Infrastructure project, just open NugetGallery and find:
+      CloudinaryDotNet by Cloudinary v.1.14.0 and then install it into Infrastructure project
+
+      then get info from our cloudinay account and assign these info (cloudName, APIKey, APISecrete) into 
+      the config file (appsettings.json) of the Application
+
+      after created the Photo Class, run the following EF migration in order to create the table
+        cd ..; dotnet ef migrations add PhotoEntityAdded -p Persistence -s API 
+      
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

@@ -37,6 +37,7 @@ namespace Infrastructure.Photos
                 if (uploadResult.Error != null) {
                     throw new Exception(uploadResult.Error.Message);
                 }
+                
                 return new PhotoUploadResult { 
                     PublicId = uploadResult.PublicId, 
                     Url = uploadResult.SecureUrl.ToString()

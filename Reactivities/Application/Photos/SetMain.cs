@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Application.Core;
 using Application.Interfaces;
 using MediatR;
@@ -6,7 +10,7 @@ using Persistence;
 
 namespace Application.Photos
 {
-    public class Delete
+    public class SetMain
     {
         public class Command : IRequest<Result<Unit>>
         {
@@ -17,38 +21,37 @@ namespace Application.Photos
         {
             private readonly DataContext _context;
             private readonly IUserAccessor _userAccessor;
-            private readonly IPhotoAccessor _photoAccessor;
-            public Handler(DataContext context, IUserAccessor userAccessor, IPhotoAccessor photoAccessor)
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
-                _photoAccessor = photoAccessor;
                 _userAccessor = userAccessor;
                 _context = context;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                //get current user with all related photos
                 var user = await _context.Users.Include(p => p.Photos)
                     .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
 
+                if (user == null) return null;
+
+                //get the photo to set as main
                 var photo = user.Photos.FirstOrDefault(x => x.Id == request.Id);
 
                 if (photo == null) return null;
 
-                if (photo.IsMain) { 
-                    return Result<Unit>.Failure("You cannot delete your main photo"); 
-                }
+                //get the current Main photo if exists
+                var currentMain = user.Photos.FirstOrDefault(x => x.IsMain);
 
-                var result = await _photoAccessor.DeletePhoto(photo.Id);
+                if (currentMain != null) currentMain.IsMain = false;
 
-                if (result == null) return Result<Unit>.Failure("Problem deleting photo");
+                // update the selected photo to be the new Main photo
+                photo.IsMain = true;
 
-                user.Photos.Remove(photo);
+                // save/persist changes to the DB
+                var result = await _context.SaveChangesAsync() > 0;
 
-                var success = await _context.SaveChangesAsync() > 0;
-
-                if (success) return Result<Unit>.Success(Unit.Value);
-
-                return Result<Unit>.Failure("Problem deleting photo");
+                return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem setting the main photo");
             }
         }
     }

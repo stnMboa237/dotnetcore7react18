@@ -17,6 +17,8 @@ namespace Application.Core
                 .ForMember(d => d.DisplayName, o => o.MapFrom(x => x.AppUser.DisplayName))
                 .ForMember(d => d.Username, o => o.MapFrom(x => x.AppUser.UserName))
                 .ForMember(d => d.Bio, o => o.MapFrom(x => x.AppUser.Bio));
+            CreateMap<AppUser, Profiles.Profile>()
+                .ForMember(d =>d.Image, o => o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain).Url));
         }
     }
 }

@@ -13,13 +13,14 @@ namespace API.Extensions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config) {
             
+            /*here we are setting up the complexeness of a password from opt.Password.<option name>*/
             services.AddIdentityCore<AppUser>(opt => {
-                /*here we are setting up the complexeness of a password from opt.Password.<option name>*/
                 opt.Password.RequireDigit = true;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<DataContext>();
 
+            /*Set the JWT Token*/
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt => 

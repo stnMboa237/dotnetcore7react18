@@ -387,6 +387,11 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
         cd ..; dotnet ef migrations add PhotoEntityAdded -p Persistence -s API 
       
   /************************************************************************************/
+  SECTION 17: Image Upload from the front
+  In order to upload image from the front, we can use drag&drop functionality. TO do this, we could
+  use the package: react-dropzone
+      npm install --save react-dropzone
+  https://github.com/react-dropzone/react-dropzone
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

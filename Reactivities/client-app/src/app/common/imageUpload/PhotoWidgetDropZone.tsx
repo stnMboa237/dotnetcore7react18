@@ -1,20 +1,42 @@
-import React, {useCallback} from 'react'
-import {useDropzone} from 'react-dropzone'
+import React, { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { Header, Icon } from 'semantic-ui-react';
 
-export default function PhotoWidgetDropZone() {
-  const onDrop = useCallback((acceptedFiles: any) => {
-    console.log(acceptedFiles);
-  }, [])
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+interface Props {
+    setFiles: (files: any) => void;
+}
 
-  return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} />
-      {
-        isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
-      }
-    </div>
-  )
+export default function PhotoWidgetDropZone({ setFiles }: Props) {
+
+    const dzStyles = {
+        border: 'dashed 3px #eee',
+        borderColor: '#eee',
+        borderRadius: '3px',
+        paddingTop: '30px',
+        textAlign: 'center' as 'center',
+        height: 200
+    };
+
+    const dzActive = {
+        borderColor: 'green'
+    };
+
+    /* onDrop is called when we upload the file
+       onDrop is a callBack so it should have an array as second parameter type: [setFiles] for this exple
+    */
+    const onDrop = useCallback((acceptedFiles: any) => {
+        setFiles(acceptedFiles.map((file: any) => Object.assign(file, {
+            preview: URL.createObjectURL(file)
+        })));
+    }, [setFiles]);
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+
+    return (
+        <div {...getRootProps()} style={isDragActive ? {...dzStyles, ...dzActive} : dzStyles} >
+            <input {...getInputProps()} />
+            <Icon name='upload' size='huge'/>
+            <Header content='Drop Image here'/>
+        </div>
+    )
 }

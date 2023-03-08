@@ -15,13 +15,13 @@ export default class ProfileStore {
 
     /*return true if the loggedIn username and the current User profile is the same */
     get isCurrentUser() {
-        if(store.userStore.user && this.profile) {
+        if (store.userStore.user && this.profile) {
             return store.userStore.user.username === this.profile.username;
         }
         return false;
     }
 
-    loadProfile = async(username: string) => {
+    loadProfile = async (username: string) => {
         this.loadingProfile = true;
         try {
             const profile = await agent.Profiles.get(username);
@@ -41,9 +41,9 @@ export default class ProfileStore {
             const response = await agent.Profiles.uploadPhoto(file);
             const photo = response.data;
             runInAction(() => {
-                if(this.profile) {
+                if (this.profile) {
                     this.profile.photos?.push(photo);
-                    if(photo.isMain && store.userStore.user) {
+                    if (photo.isMain && store.userStore.user) {
                         store.userStore.setImage(photo.url);
                         this.profile.image = photo.url;
                     }
@@ -56,13 +56,13 @@ export default class ProfileStore {
         }
     }
 
-    setMainPhoto = async(photo: Photo) => {
+    setMainPhoto = async (photo: Photo) => {
         this.loading = true;
         try {
             await agent.Profiles.setMainPhoto(photo.id);
             store.userStore.setImage(photo.url);
             runInAction(() => {
-                if(this.profile && this.profile.photos){
+                if (this.profile && this.profile.photos) {
                     /*l'ancienne photo Main est mise á false */
                     this.profile.photos.find(p => p.isMain)!.isMain = false;
                     /*la nouvelle photo Main est mise á true */
@@ -72,6 +72,22 @@ export default class ProfileStore {
                 }
                 this.loading = false;
             })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => this.loading = false);
+        }
+    }
+
+    deletePhoto = async (photo: Photo) => {
+        this.loading = true;
+        try {
+            await agent.Profiles.deletePhoto(photo.id);
+            runInAction(() => {
+                if (this.profile) {
+                    this.profile.photos = this.profile.photos?.filter(p => p.id !== photo.id);
+                }
+                this.loading = false;
+            });
         } catch (error) {
             console.log(error);
             runInAction(() => this.loading = false);

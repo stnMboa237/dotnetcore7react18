@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default observer(function ProfilePhotos({ profile }: Props) {
-    const { profileStore: { isCurrentUser, uploadPhoto, uploading, loading, setMainPhoto } } = useStore();
+    const { profileStore: { isCurrentUser, uploadPhoto, uploading, loading, setMainPhoto, deletePhoto } } = useStore();
     const [addPhotoMode, setAddPhotoMode] = useState(false);
 
     /* ceci est un state locale dont le but est d'afficher le loader juste dans le btn setMain*/
@@ -25,6 +25,11 @@ export default observer(function ProfilePhotos({ profile }: Props) {
         uploadPhoto(file).then(() => {
             setAddPhotoMode(false);
         });
+    }
+
+    function handleDeletePhoto(photo: Photo, e: SyntheticEvent<HTMLButtonElement>): void {
+        setTarget(e.currentTarget.name);
+        deletePhoto(photo);
     }
 
     return (
@@ -63,6 +68,10 @@ export default observer(function ProfilePhotos({ profile }: Props) {
                                                     basic
                                                     color="red"
                                                     icon='trash'
+                                                    name={photo.id + "del"}
+                                                    disabled={photo.isMain}
+                                                    loading={target === (photo.id+"del") && loading}
+                                                    onClick={e => handleDeletePhoto(photo,e)}
                                                 />
                                             </ButtonGroup>
                                         )}

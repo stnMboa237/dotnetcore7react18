@@ -61,7 +61,8 @@ export default observer(function ActivityForm() {
                 enableReinitialize 
                 initialValues={activity} 
                 onSubmit={values => handleFormSubmit(values)}>
-                {/* formik a besoin de 3 choses pour notre form:
+                {/* formik a besoin de 3 choses au minimum pour notre que le form soit ok 
+                a savoit: (validationSchema, initialValues, onSubmit):
                     PS: enableReinitialize permet de setter les champs du form après son initialisation
                     - values: la valeur (objet contenant les champs du form) 
                     - handleChange: fction FORMIK qui gère la gestion des update des champs

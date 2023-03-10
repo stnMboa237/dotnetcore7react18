@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -46,6 +47,8 @@ app.UseAuthentication(); /*AUTHENTICATION CAME'S ALWAYS FIRST BEFORE AUTHORIZATI
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chat"); //tout juste après MapControllers, on doit mapper
+// ChatHub et indiquer la route oú seront redirigés les user quand ils se connecteront á notre chatHub
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

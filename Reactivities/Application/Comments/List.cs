@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Core;
-using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -16,7 +11,7 @@ namespace Application.Comments
     {
         public class Query : IRequest<Result<List<CommentDto>>>
         {
-            public string ActivityId { get; set; }
+            public Guid ActivityId { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<List<CommentDto>>>
@@ -31,7 +26,7 @@ namespace Application.Comments
             public async Task<Result<List<CommentDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var comments = await _context.Comments
-                    .Where(x => x.Activity.Id == new Guid(request.ActivityId))
+                    .Where(x => x.Activity.Id == request.ActivityId)
                     .OrderBy(x => x.CreatedAt)
                     .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();

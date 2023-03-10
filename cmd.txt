@@ -397,8 +397,33 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   install react-cropper: it allows us to resize/crop an image
       npm install --save react-cropper
 
-  
   /************************************************************************************/
+  SECTION 19: signalR
+  What is SignalR:
+    Adds real time web functionality to apps
+    it allows connected clients to receive content instantly (when the server update some data, the client will receive these update instantly)
+    it is ideal for:
+      - chat apps
+      - dashboard
+      - Monitoring
+    it has to possibility to use 3 differents types of transport:
+      - WebSockets : (meilleure option) connexion bidirectionnelle entre le srv et le client (á condition que les 2 supportent le webSocket)
+      - Server-sent events: (au cas oú le webSocket ne serait pas pris en charge par le srv/client ou les 2, alors, une alternative de transport
+         de l'info est : server-event/eventSource supporté par la plus part des browser á l'exception d'Internet Explorer avant la v10)
+      - Long polling (pire des solutions car il cree des latences quand la connexion reprend): crée un connexion Persistante ouverte 
+        entre le client et le srv jusquá ce que le server reponde.
+
+    SignalR use a HUB to provide us 2 types of objects to manage the connection between the server and the client
+      - Context: it's an object which provides ConnectionId, UserIdentifier, User, GetHttpContext() .... 
+      - clients: (AllExcept, client, Group (group of client connected to), Caller (to user who sent the request to the server), Others (every body except the caller)...)
+
+    en resumé, le HUB permet de:
+      - Allows connected clients to call methods on server
+      - can send notification to connected clients
+    
+    create a migration for the new Comment table: 
+      dotnet ef  migrations add CommentEntityAdded -p Persistence/ -s API
+
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

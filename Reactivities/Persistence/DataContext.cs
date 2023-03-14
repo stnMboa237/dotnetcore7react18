@@ -19,7 +19,7 @@ namespace Persistence
             base.OnModelCreating(builder);
 
             builder.Entity<ActivityAttendee>(x => x.HasKey(aa => new { aa.AppUserId, aa.ActivityId }));
-            
+
             /*begin configure MANY TO MANY relation between Activity and AppUser*/
             builder.Entity<ActivityAttendee>()
                 .HasOne(u => u.AppUser)

@@ -30,7 +30,7 @@ namespace Application.Comments
                     .OrderBy(x => x.CreatedAt)
                     .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
-                
+
                 return Result<List<CommentDto>>.Success(comments);
             }
         }

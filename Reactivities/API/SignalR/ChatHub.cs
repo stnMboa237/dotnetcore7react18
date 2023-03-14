@@ -31,7 +31,7 @@ namespace API.SignalR
             await Groups.AddToGroupAsync(Context.ConnectionId, activityId);
 
             //get the list of comments
-            var result = await _mediator.Send(new List.Query {ActivityId = Guid.Parse(activityId)});
+            var result = await _mediator.Send(new List.Query { ActivityId = Guid.Parse(activityId) });
 
             //send the list of comments to all connected User memeber of the group named activityId
             await Clients.Caller.SendAsync("LoadComments", result.Value);

@@ -11,10 +11,12 @@ namespace API.Extensions
 {
     public static class IdentityServiceExtensions
     {
-        public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config) {
-            
+        public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
+        {
+
             /*here we are setting up the complexeness of a password from opt.Password.<option name>*/
-            services.AddIdentityCore<AppUser>(opt => {
+            services.AddIdentityCore<AppUser>(opt =>
+            {
                 opt.Password.RequireDigit = true;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.User.RequireUniqueEmail = true;
@@ -23,9 +25,10 @@ namespace API.Extensions
             /*Set the JWT Token*/
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(opt => 
+            .AddJwtBearer(opt =>
             {
-                opt.TokenValidationParameters = new TokenValidationParameters {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
                     ValidateIssuerSigningKey = true, /* validate if token is valid token!!! IMPORTANT!!! */
                     IssuerSigningKey = key,  /*the key here must be the same as into TokenServices.cs */
                     ValidateIssuer = false,  /*nous validons pas car nous voulons laisser la validation aussi basique que possible*/
@@ -33,11 +36,14 @@ namespace API.Extensions
 
                 };
                 /*begin: get the from the Header for SignalR*/
-                opt.Events = new JwtBearerEvents {
-                    OnMessageReceived = context => {
+                opt.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
                         var accessToken = context.Request.Query["access_token"];
                         var path = context.HttpContext.Request.Path;
-                        if(!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat"))) {
+                        if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
+                        {
                             context.Token = accessToken;
                         };
                         return Task.CompletedTask;
@@ -46,8 +52,10 @@ namespace API.Extensions
                 /*End: get the from the Header for SignalR*/
             });
 
-            services.AddAuthorization( opt => {
-                opt.AddPolicy("IsActivityHost", policy => {
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsActivityHost", policy =>
+                {
                     policy.Requirements.Add(new IsHostRequirement());
                 });
             });

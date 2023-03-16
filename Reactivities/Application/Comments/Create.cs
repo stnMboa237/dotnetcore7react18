@@ -50,7 +50,8 @@ namespace Application.Comments
                 var comment = new Comment {
                     Author = user,
                     Activity = activity,
-                    Body = request.Body
+                    Body = request.Body,
+                    CreatedAt = DateTime.Now
                 };
 
                 activity.Comments.Add(comment);

@@ -26,7 +26,7 @@ export default class CommentStore {
             // active la connection á l'HUB pour l'activité ayant Id activityId. Donc tous les commentaires liées á cette activités vont se charger
             this.hubConnection.start().catch(error => console.log('Error establishing the connection to the HUB: ' + error));
 
-            // et pour charger les commentaires, on use la méthode defini dans le HUB coté back onConnectedAsync. 
+            // et pour charger/recup les commentaires liés á l'activityId, on use la méthode defini dans le HUB coté back onConnectedAsync. 
             // le nom de la methode á take se call "LoadComments" dans ce cas. LES NOMS DOIVENT MATCHER!!!
             this.hubConnection.on('LoadComments', (commentsFromBack: ChatComment[]) => {
                 runInAction(() => this.comments = commentsFromBack)
@@ -45,5 +45,16 @@ export default class CommentStore {
     clearComments = () => {
         this.comments = [];
         this.stopHubConnection();
+    }
+
+    addComments = async(values: any) => {
+        values.activityId = store.activityStore.selectedActivity?.id;
+        try {
+            /*on appelle directement la methode back SendComment qui a son tour invoquera la fonction ReceiveComment 
+            pour dispatcher les nouvo comm aux users du monde */
+            await this.hubConnection?.invoke('SendComment', values);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

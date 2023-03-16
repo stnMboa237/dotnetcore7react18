@@ -18,7 +18,8 @@ namespace API.SignalR
             var comment = await _mediator.Send(cmd);
             // send the comment to all connected users members of a group
             await Clients.Group(cmd.ActivityId.ToString())
-                .SendAsync("ReceiveComment", comment.Value); /*ReceiveComment is the name of a method which returns the comment sent by the user previously*/
+                .SendAsync("ReceiveComment", comment.Value); /*ReceiveComment is the name of a method which returns the 
+                comment sent by the user previously to all connected user (user from the same group) */
         }
 
         /*when a client connects to the HUB. we want him to join a group, OnConnectedAsync is called when a client is connecting to the HUB*/

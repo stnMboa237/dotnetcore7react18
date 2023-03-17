@@ -29,11 +29,19 @@ export default class CommentStore {
             // et pour charger/recup les commentaires liés á l'activityId, on use la méthode defini dans le HUB coté back onConnectedAsync. 
             // le nom de la methode á take se call "LoadComments" dans ce cas. LES NOMS DOIVENT MATCHER!!!
             this.hubConnection.on('LoadComments', (commentsFromBack: ChatComment[]) => {
-                runInAction(() => this.comments = commentsFromBack)
+                runInAction(() => {
+                    commentsFromBack.forEach(com => {
+                        com.createdAt = new Date(com.createdAt + 'Z');
+                    })
+                    this.comments = commentsFromBack
+                });
             });
 
             this.hubConnection.on('ReceiveComment', (commentToSend: ChatComment) => {
-                runInAction(() => this.comments.push(commentToSend));
+                runInAction(() => {
+                    commentToSend.createdAt = new Date(commentToSend.createdAt);
+                    this.comments.unshift(commentToSend); //unshfift put a new item at the top of the array
+                });
             });
         }
     }
@@ -47,7 +55,7 @@ export default class CommentStore {
         this.stopHubConnection();
     }
 
-    addComments = async(values: any) => {
+    addComment = async(values: any) => {
         values.activityId = store.activityStore.selectedActivity?.id;
         try {
             /*on appelle directement la methode back SendComment qui a son tour invoquera la fonction ReceiveComment 

@@ -8,6 +8,7 @@ export default class ProfileStore {
     loadingProfile = false;
     uploading = false;
     loading = false;
+    loadingFollowings = false;
     followings: Profile[] = [];
 
     constructor() {
@@ -137,5 +138,20 @@ export default class ProfileStore {
             console.log(error);
             runInAction(() => this.loading = false);
         }
+    }
+
+    loadFollowings = async (predicate: string) => {
+        this.loadingFollowings = true;
+        try {
+            const followings = await agent.Profiles.listFollowings(this.profile!.username, predicate);
+            runInAction(() => {
+                this.followings = followings;
+                this.loadingFollowings = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => this.loadingFollowings = false);
+        }
+
     }
 }

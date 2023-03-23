@@ -17,7 +17,7 @@ export default observer(function ProfilePage() {
         return () => { 
             setActiveTab(0); // lors du chargement de la page de profile, on affiche par defaut le pane 0 : About
         }
-    }, [loadProfile, username]);
+    }, [loadProfile, username, setActiveTab]);
 
     if (loadingProfile) return <LoadingComponent content="Loading Profile..." />
 

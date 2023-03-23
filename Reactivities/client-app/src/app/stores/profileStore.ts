@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Photo, Profile } from "../models/profile";
 import { store } from "./store";
@@ -10,9 +10,25 @@ export default class ProfileStore {
     loading = false;
     loadingFollowings = false;
     followings: Profile[] = [];
+    activeTab = 0;
 
     constructor() {
         makeAutoObservable(this);
+        reaction(
+            () => this.activeTab,
+            activeTab => {
+                if(activeTab === 3 || activeTab === 4) {
+                    const predicate = activeTab === 3 ? 'followers' : 'following'
+                    this.loadFollowings(predicate);
+                }else{
+                    this.followings = [];
+                }
+            }
+        )
+    }
+
+    setActiveTab = (activeTab: any) => {
+        this.activeTab = activeTab;
     }
 
     /*return true if the loggedIn username and the current User profile is the same */

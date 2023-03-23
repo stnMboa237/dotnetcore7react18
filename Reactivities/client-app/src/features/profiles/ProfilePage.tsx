@@ -10,10 +10,13 @@ import ProfileHeader from "./ProfileHeader";
 export default observer(function ProfilePage() {
     const { username } = useParams<{ username: string }>();
     const { profileStore } = useStore();
-    const { loadingProfile, loadProfile, profile } = profileStore;
+    const { loadingProfile, loadProfile, profile, setActiveTab } = profileStore;
 
     useEffect(() => {
         if (username) loadProfile(username);
+        return () => { 
+            setActiveTab(0); // lors du chargement de la page de profile, on affiche par defaut le pane 0 : About
+        }
     }, [loadProfile, username]);
 
     if (loadingProfile) return <LoadingComponent content="Loading Profile..." />

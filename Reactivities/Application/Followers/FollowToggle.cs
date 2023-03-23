@@ -24,6 +24,7 @@ namespace Application.Followers
                 _context = context;
             }
 
+            /**this function allow a user to follow/unfollow another user*/
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 /*observer> is the user we gonna use to follow other users*/

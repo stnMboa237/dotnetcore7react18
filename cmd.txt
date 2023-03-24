@@ -437,7 +437,39 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   from the root folder just run the cmd:
 
   dotnet ef migrations script -o migrationScriptTest.sql -p Persistence -s API
+  
   /************************************************************************************/
+  HOW TO MANAGE PAGING, SORTING ?
+
+  in this section, we will do:
+    - paging on the APi and Client. Actuellement, l'API retourne la list des item quand on fait 
+    un get. Si l'application a peut de données, on est bon. Mais si le nbre de données et de requetes
+    vers l'api augmentent, alors, il est bon de faire une pagination
+    - Sorting on the API/Client
+    - Filtering on the API/Client
+
+    PAGING, SORTING, FILTERING sont des méthodes qu'on peut implementer dans des IQueryable<T>.
+    Nous allons stocker nos requetes dans des IQueryable<T> jusqu'au moment de les utiliser
+
+    What is IQueryable<T>?
+      - query variable stores query commands (query commands can be thinks like orderBy, Where etc...)
+      - using IQueryable<T>, we will creates an expression tree. 
+        
+        * the execution of the expression will be deferred until iteration (ForEach loop, ToList(), 
+          ToArray(), ToDictionary(): sont les expressions qui declenchent l'execution de la query dans la DB).
+
+        * Singleton queries (count, average etc...) will cause our queries to be executed inside the DB
+
+  exple:
+    var queryable = _context.Activities
+      .Where(x => x.Date >= request.StartDate)
+      .OrderBy (x => x.Date)
+      .AsQueryable(); // queryable est notre requete proprement dite
+
+    var activities = await queryable.Skip (request.Offset ?? 0)
+      .Take(request.Limit ?? 3) // SKIP et TAKE sont des operateurs de pagination
+      .ToListAsync(); //toList execute reellement la requete
+
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

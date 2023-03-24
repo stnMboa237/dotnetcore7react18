@@ -428,6 +428,15 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
       npm install @microsoft/signalr
 
   /************************************************************************************/
+  HOW TO CREATE UML ?
+
+  you can use https://vertabelo.com/ in order to create a UML diagram: you can generate a SQL script from 
+  a Entity framework migration, then create aphysical model of data
+
+  how to create a sql script using EF?
+  from the root folder just run the cmd:
+
+  dotnet ef migrations script -o migrationScriptTest.sql -p Persistence -s API
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

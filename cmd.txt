@@ -471,7 +471,9 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
       .ToListAsync(); //toList execute reellement la requete
 
     Pour le front, nous allons gerer la pagination á la facon de twitter avec le LA PAGINATION VERTICALE.
-    Il s'agit en quelques sorte du vertical scrolling "infini"
+    Il s'agit en quelques sorte du vertical scrolling "infini". Pour cela, on doit installer la package:
+      npm install react-infinite-scroller
+      npm install @types/react-infinite-scroller
 
   /************************************************************************************/
   /************************************************************************************/

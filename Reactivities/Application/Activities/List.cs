@@ -13,7 +13,7 @@ namespace Application.Activities
     {
         public class Query : IRequest<Result<PagedList<ActivityDto>>>
         {
-            public PagingParams PagingParams { get; set; }
+            public ActivityParams Params { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result<PagedList<ActivityDto>>>
@@ -31,11 +31,21 @@ namespace Application.Activities
             public async Task<Result<PagedList<ActivityDto>>> Handle(Query request, CancellationToken token)
             {
                 var query = _context.Activities
-                .OrderBy(d => d.Date)
-                        .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider, new { currentUsername = _userAccessor.GetUserName() })
-                        .AsQueryable();
+                    .Where(x => x.Date >= request.Params.StartDate)
+                    .OrderBy(d => d.Date)
+                    .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider, new { currentUsername = _userAccessor.GetUserName() })
+                    .AsQueryable();
+                
+                //return list of activities where the current logged user is going
+                if(request.Params.IsGoing && !request.Params.IsHost) {
+                    query = query.Where(x => x.Attendees.Any(a => a.Username == _userAccessor.GetUserName()));
+                }
+
+                if(request.Params.IsHost && !request.Params.IsGoing) {
+                    query = query.Where(x => x.HostUsername == _userAccessor.GetUserName());
+                }
                 return Result<PagedList<ActivityDto>>.Success(
-                    await PagedList<ActivityDto>.CreateAsync(query, request.PagingParams.pageNumber, request.PagingParams.PageSize)
+                    await PagedList<ActivityDto>.CreateAsync(query, request.Params.pageNumber, request.Params.PageSize)
                 );
             }
         }

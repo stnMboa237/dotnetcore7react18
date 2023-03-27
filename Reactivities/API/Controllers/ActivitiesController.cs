@@ -9,9 +9,9 @@ namespace API.Controllers
     public class ActivitiesController : BaseApiController
     {
         [HttpGet] //api/activities
-        public async Task<IActionResult> GetActivities([FromQuery] PagingParams _pagingParams)
+        public async Task<IActionResult> GetActivities([FromQuery] ActivityParams _param)
         {
-            return HandlePagedResult(await Mediator.Send(new List.Query {PagingParams = _pagingParams}));
+            return HandlePagedResult(await Mediator.Send(new List.Query {Params = _param}));
         }
 
         //IActionResult allows us to return a Http Response object

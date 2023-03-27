@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Activity, ActivityFormValues } from "../models/activity";
+import { Pagination, PagingParams } from "../models/pagination";
 import { Profile } from "../models/profile";
 import { store } from "./store";
 
@@ -11,9 +12,22 @@ export default class ActivityStore {
     editMode = false;
     loading = false;
     loadingInitial = false;
+    pagination: Pagination | null = null;
+    pagingParams = new PagingParams();
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    setPagingParams = (pagingParams: PagingParams) => {
+        this.pagingParams = pagingParams;
+    }
+
+    get axiosParams () {
+        const params = new URLSearchParams();
+        params.append('pageNumber', this.pagingParams.pageNumber.toString());
+        params.append('pageSize', this.pagingParams.pageSize.toString());
+        return params;
     }
 
     /*action: returns activities sorted by date*/
@@ -47,16 +61,21 @@ export default class ActivityStore {
         le code non asynchrone DOIT se trouver hors du bloc try/catch*/
         this.setLoadingInitial(true);
         try {
-            const activities = await agent.Activities.list();
-            activities.forEach(activity => {
+            const result = await agent.Activities.list(this.axiosParams);
+            result.data.forEach(activity => {
                 this.setActivity(activity);
             });
+            this.setPagination(result.pagination);
             this.setLoadingInitial(false);
 
         } catch (error) {
             console.log(error);
             this.setLoadingInitial(false);
         }
+    }
+
+    setPagination = (pagination: Pagination) => {
+        this.pagination = pagination;
     }
 
     loadActivity = async (id: string) => {
@@ -85,8 +104,8 @@ export default class ActivityStore {
 
     private setActivity = (activity: Activity) => {
         const user = store.userStore.user;
-        if(user !== null || user !== undefined){
-            activity.isGoing = activity.attendees!.some(a =>{
+        if (user !== null || user !== undefined) {
+            activity.isGoing = activity.attendees!.some(a => {
                 return a.username === user?.username; /* le createur de l'activité part par defaut á son activité*/
             });
             activity.isHost = activity.hostUsername === user?.username;
@@ -125,13 +144,13 @@ export default class ActivityStore {
         try {
             await agent.Activities.update(activity);
             runInAction(() => {
-                if(activity.id) {
+                if (activity.id) {
                     /*spread operator ... allows us to quickly copy all or part of an existing 
                     array or object into another array or object */
-                    let updatedActivity = { ...this.getActivity(activity.id), ...activity};
+                    let updatedActivity = { ...this.getActivity(activity.id), ...activity };
                     /* update an existing activity based on key (id) / or insert a new one*/
                     this.activityRegistry.set(activity.id, updatedActivity as Activity);
-                   this.selectedActivity = updatedActivity as Activity;
+                    this.selectedActivity = updatedActivity as Activity;
                 }
             });
         } catch (error) {
@@ -155,13 +174,13 @@ export default class ActivityStore {
         }
     }
 
-    updateAttendance = async() => {
+    updateAttendance = async () => {
         const user = store.userStore.user;
         this.loading = true;
         try {
             await agent.Activities.attend(this.selectedActivity!.id);
             runInAction(() => {
-                if(this.selectedActivity?.isGoing) {
+                if (this.selectedActivity?.isGoing) {
                     /*si l'user actuelle participe deja (dans ce cas, l'user voudrait supprimer sa participation) 
                         á l'activité courante, alors, on le retire de l'array des participants */
                     this.selectedActivity.attendees = this.selectedActivity
@@ -179,13 +198,13 @@ export default class ActivityStore {
             });
         } catch (error) {
             console.log(error);
-        } finally{
+        } finally {
             /*en casn d'erreur/succès, on arrete le loading en settant le loading flag a false */
             runInAction(() => this.loading = false);
         }
     }
 
-    cancelActivityToggle = async() => {
+    cancelActivityToggle = async () => {
         this.loading = true;
         try {
             /* updt the activity server side*/
@@ -209,7 +228,7 @@ export default class ActivityStore {
     updateAttendeeFollowing = (username: string) => {
         this.activityRegistry.forEach(activity => {
             activity.attendees.forEach(attendee => {
-                if(attendee.username === username) {
+                if (attendee.username === username) {
                     attendee.following ? attendee.followersCount-- : attendee.followingCount++;
                     attendee.following = !attendee.following;
                 }

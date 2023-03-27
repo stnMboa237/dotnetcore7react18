@@ -32,8 +32,6 @@ export default observer(function ActivityDashboard() {
         }
     }, [activityRegistry.size, loadActivities]); // [] permet d'executer la 'get' juste une fois. sinon, elle serait lancer n fois.
 
-    // if (activityStore.loadingInitial && !loadingNext) return (<LoadingComponent content='Loading activities...' />)
-
     return (
         <Grid>
             <Grid.Column width='10'>
@@ -57,14 +55,6 @@ export default observer(function ActivityDashboard() {
                     )
 
                 }
-                {/* <Button 
-                    floated="right" 
-                    content="More..." 
-                    positive
-                    onClick={handleGetNext}
-                    loading={loadingNext} 
-                    disabled={pagination?.totalPages === pagination?.currentPage}
-                /> */}
             </Grid.Column>
             <Grid.Column width='6'>
                 <ActivityFilters />

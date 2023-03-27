@@ -5,15 +5,17 @@ import { Grid, Loader } from 'semantic-ui-react';
 import LoadingComponent from '../../../app/layout/loadingComponent';
 import { PagingParams } from '../../../app/models/pagination';
 import { useStore } from '../../../app/stores/store';
+import activityForm from '../form/activityForm';
 import ActivityFilters from './ActivityFilters';
 import ActivityList from './ActivityList';
+import ActivityListItemPlaceholder from './ActivityListItemPlaceholder';
 
 /*observer needs a function as parameter */
 export default observer(function ActivityDashboard() {
 
     const { activityStore } = useStore();
     const { loadActivities, activityRegistry, setPagingParams, pagination } = activityStore;
-    const [ loadingNext, setLoadingNext ]= useState(false);
+    const [loadingNext, setLoadingNext] = useState(false);
 
     function handleGetNext() {
         setLoadingNext(true);
@@ -25,29 +27,36 @@ export default observer(function ActivityDashboard() {
     // En l'occurence, on appelle la methode getActivities du back
     useEffect(() => {
         /* */
-        if(activityRegistry.size <= 1) {
+        if (activityRegistry.size <= 1) {
             loadActivities();
         }
     }, [activityRegistry.size, loadActivities]); // [] permet d'executer la 'get' juste une fois. sinon, elle serait lancer n fois.
 
-    if (activityStore.loadingInitial && !loadingNext) return (<LoadingComponent content='Loading activities...' />)
+    // if (activityStore.loadingInitial && !loadingNext) return (<LoadingComponent content='Loading activities...' />)
 
     return (
         <Grid>
             <Grid.Column width='10'>
-                <InfiniteScroll
-                    pageStart={0}
-                    loadMore={handleGetNext}
-                    /* hasMore is a flag used to stop calls to the API when we have already loaded all activities items 
-                        !!pagination check if pagination (object) !== null 
-                    */
-                    hasMore={!loadingNext && !!pagination && pagination.currentPage < pagination.totalPages}
-                    initialLoad={false}
-                >
-                    <ActivityList />
+                {activityStore.loadingInitial && !loadingNext ? (
+                        <>
+                            <ActivityListItemPlaceholder></ActivityListItemPlaceholder>
+                        </>
+                    ) : (
+                        <InfiniteScroll
+                            pageStart={0}
+                            loadMore={handleGetNext}
+                            /* hasMore is a flag used to stop calls to the API when we have already loaded all activities items 
+                                !!pagination check if pagination (object) !== null 
+                            */
+                            hasMore={!loadingNext && !!pagination && pagination.currentPage < pagination.totalPages}
+                            initialLoad={false}
+                        >
+                            <ActivityList />
 
-                </InfiniteScroll>
-                
+                        </InfiniteScroll>
+                    )
+
+                }
                 {/* <Button 
                     floated="right" 
                     content="More..." 

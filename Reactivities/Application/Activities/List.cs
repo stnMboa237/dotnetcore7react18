@@ -1,10 +1,8 @@
-using System.Linq;
 using Application.Core;
 using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Activities
@@ -44,6 +42,7 @@ namespace Application.Activities
                 if(request.Params.IsHost && !request.Params.IsGoing) {
                     query = query.Where(x => x.HostUsername == _userAccessor.GetUserName());
                 }
+                
                 return Result<PagedList<ActivityDto>>.Success(
                     await PagedList<ActivityDto>.CreateAsync(query, request.Params.pageNumber, request.Params.PageSize)
                 );

@@ -11,7 +11,7 @@ export default observer(function ActivityFilters() {
             <Menu vertical size='large' style={{ width: '100%', marginTop: 25 }}>
                 <Header icon='filter' attached color="teal" content='Filters' />
                 <Menu.Item 
-                    content='All Activities' 
+                    content='All Activities'
                     active={predicate.has('all')}
                     onClick={() => setPredicate('all', 'true')}
                 />
@@ -23,13 +23,13 @@ export default observer(function ActivityFilters() {
                 <Menu.Item 
                     content="'I'm hosting" 
                     active={predicate.has('isHost')}
-                    onClick={() => setPredicate('isHost', 'true')}    
+                    onClick={() => setPredicate('isHost', 'true')}
                 />
             </Menu>
             <Header />
             <Calendar 
                 onChange={(date: Date) => setPredicate('startDate', date)}
-                value={predicate.get('startDate') || new Date()}  
+                value={predicate.get('startDate') || new Date()}
             />
         </>
 

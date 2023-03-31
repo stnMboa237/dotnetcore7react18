@@ -10,13 +10,14 @@ const panes = [
     { menuItem: 'Future Events', pane: { key: 'future' } },
     { menuItem: 'Past Events', pane: { key: 'past' } },
     { menuItem: 'Hosting', pane: { key: 'hosting' } },
-]
+];
+
 export default observer(function ProfileEvents() {
     const { profileStore: { loadingUserActivities, loadUserActivities, profile, userActivities } } = useStore();
 
     useEffect(() => {
         if (profile) {
-            loadUserActivities(profile.username);
+            loadUserActivities(profile.username, panes[0].pane.key);
         }
     }, [loadUserActivities, profile]);
 
@@ -37,7 +38,7 @@ export default observer(function ProfileEvents() {
                         menu={{ secondary: true, pointing: true }}
                         onTabChange={(e, data) => {
                             if (profile) {
-                                loadUserActivities(profile.username, panes[data.activeIndex as number].pane.key);
+                                loadUserActivities(profile.username, panes[data.activeIndex as number].pane.key /*the key is the predicate*/);
                             }
                         }}
                     />

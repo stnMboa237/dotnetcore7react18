@@ -34,7 +34,7 @@ namespace Application.Profiles
 
                 var query = _context.ActivityAttendees
                     .Where(x => x.AppUser.UserName == request.Username)
-                    .OrderByDescending(x => x.Activity.Date)
+                    .OrderBy(x => x.Activity.Date)
                     .ProjectTo<UserActivityDto>(_mapper.ConfigurationProvider)
                     .AsQueryable();
 

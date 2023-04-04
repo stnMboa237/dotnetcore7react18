@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Container } from 'semantic-ui-react';
 import HomePage from '../../features/activities/home/HomePage';
@@ -26,6 +26,7 @@ function App() {
 
   return (
     <>
+      <ScrollRestoration />
       <ModalContainer />
       {/*
           to use toast notifier inside our app, we must initialize it component firstly here 

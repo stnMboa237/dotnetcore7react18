@@ -483,11 +483,32 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   To create a production build of our app, just go to the link https://create-react-app.dev/docs/production-build
   and follow the instructions. We can specify the path where the build result will be store by adding BUILD_PATH=ourPath
   into the package.json/scripts/build
-  Exple: "build": "set BUILD_PATH=../API/wwwroot && react-scripts build"
+  Exple: "build": "set BUILD_PATH='../API/wwwroot'&& react-scripts build",
 
   run 
     npm run build
   /************************************************************************************/
+  How to DOCKER-ize the app?
+  - we can use PostGresSQL directly fromt Docker installation
+    https://www.docker.com/products/docker-desktop/
+  
+
+  Enable Hyper V from Powershell (opened as Admin and run the command)
+     dism.exe /Online /Enable-Feature:Microsoft-Hyper-V /All
+     bcdedit /set hypervisorlaunchtype auto
+
+    after installed docker, you can run an instance of postGres using the following command:
+      docker run --name dev -e POSTGRES-USER=admin -e POSTGRES-PASSWORD=secret -p 5432:5432 -d postgres:latest
+
+  In order to remove Sqlite and use Postgres in Production mode, we must:
+    - delete Migrations Folder from Persistence project
+    - run the following cmd: 
+      dotnet ef database drop -p Persistence -s API
+    - check DB providers config from 
+      https://learn.microsoft.com/en-us/ef/core/providers/?tabs=dotnet-core-cli
+    - Install "Npgsql.EntityFrameworkCore.PostgreSQL by Shay Rojansky,Austin Drenski,Yoh Deadfall" from NugetGallery
+    the version to install MUST be the same as the EntityFrameworkCore and Dotnet Version. In our case, it's 7
+    then install this package for the Persistence project.
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

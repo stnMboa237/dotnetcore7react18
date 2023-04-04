@@ -47,9 +47,14 @@ app.UseCors("CorsPolicy");
 app.UseAuthentication(); /*AUTHENTICATION CAME'S ALWAYS FIRST BEFORE AUTHORIZATION*/
 app.UseAuthorization();
 
+app.UseDefaultFiles(); /*tells to Kestrel server to look html files into wwwroot folder and fetch them*/
+app.UseStaticFiles();  /*tells to Kestrel server to look static files (*.js, ) into wwwroot folder and fetch them*/
+
 app.MapControllers();
 app.MapHub<ChatHub>("/chat"); //tout juste après MapControllers, on doit mapper
 // ChatHub et indiquer la route oú seront redirigés les user quand ils se connecteront á notre chatHub
+
+app.MapFallbackToController("Index", "Fallback"); 
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

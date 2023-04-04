@@ -478,7 +478,15 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
   /************************************************************************************/
   Comment éviter que le lors de l'ouverture d'un component ou d'une page, il faille stroller vers le haut?
   Pour cela, il suffit de rajouter Le composant <ScrollRestoration /> dans le composant racine App.tsx
+
   /************************************************************************************/
+  To create a production build of our app, just go to the link https://create-react-app.dev/docs/production-build
+  and follow the instructions. We can specify the path where the build result will be store by adding BUILD_PATH=ourPath
+  into the package.json/scripts/build
+  Exple: "build": "set BUILD_PATH=../API/wwwroot && react-scripts build"
+
+  run 
+    npm run build
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

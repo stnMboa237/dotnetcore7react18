@@ -31,8 +31,8 @@ export default class CommentStore {
             this.hubConnection.on('LoadComments', (commentsFromBack: ChatComment[]) => {
                 runInAction(() => {
                     commentsFromBack.forEach(com => {
-                        com.createdAt = new Date(com.createdAt + 'Z');
-                    })
+                        com.createdAt = new Date(com.createdAt);
+                    });
                     this.comments = commentsFromBack
                 });
             });

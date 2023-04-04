@@ -498,7 +498,7 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
      bcdedit /set hypervisorlaunchtype auto
 
     after installed docker, you can run an instance of postGres using the following command:
-      docker run --name dev -e POSTGRES-USER=admin -e POSTGRES-PASSWORD=secret -p 5432:5432 -d postgres:latest
+      docker run --name dev -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=secret -p 5432:5432 -d postgres:latest
 
   In order to remove Sqlite and use Postgres in Production mode, we must:
     - delete Migrations Folder from Persistence project
@@ -509,6 +509,8 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
     - Install "Npgsql.EntityFrameworkCore.PostgreSQL by Shay Rojansky,Austin Drenski,Yoh Deadfall" from NugetGallery
     the version to install MUST be the same as the EntityFrameworkCore and Dotnet Version. In our case, it's 7
     then install this package for the Persistence project.
+    - create a new MIgration: 
+      dotnet ef migrations add PostgresInitial -p Persistence/ -s API/
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

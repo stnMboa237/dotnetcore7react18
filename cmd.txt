@@ -632,6 +632,47 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
 
   /************************************************************************************/
   FINALLY, WE CAN DEPLOY THE APP
+  - migrate the repo from gitlab to github
+  - then clone it locally
+  - into the main project root folder (Reactivities in this case), cree the workflow folder 
+    following the path: .github/workflows/docker-push.yml
+
+    the content of the file docker-push.yml must be somthing like
+
+              name: ci #name of the file
+
+              on:
+                push:
+                  branches:
+                    - 'main'
+
+              jobs:
+                docker:
+                  runs-on: ubuntu-latest
+                  steps:
+                    -
+                      #name: Set up QEMU #we don't need this
+                      #uses: docker/setup-qemu-action@v2 #we don't need this
+                    -
+                      name: Set up Docker Buildx #this will biuld a docker image for us
+                      uses: docker/setup-buildx-action@v2
+                    -
+                      name: Login to Docker Hub
+                      uses: docker/login-action@v2
+                      with:
+                        username: ${{ secrets.DOCKERHUB_USERNAME }} #this info will be store into gitHub web site 
+                        password: ${{ secrets.DOCKERHUB_TOKEN }}
+                    -
+                      name: Build and push
+                      uses: docker/build-push-action@v4
+                      with:
+                        push: true
+                        tags: user/app:latest
+
+  - how to store secrets.DOCKERHUB_USERNAME/DOCKERHUB_TOKEN
+    - go the github/reactivities repo
+    - click on settings (settings of this repo)
+    - from the security tab, select action / new repository secret
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

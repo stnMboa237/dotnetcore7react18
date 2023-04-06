@@ -1,0 +1,29 @@
+# fly.toml file generated for reactivities-api-app on 2023-04-06T07:30:05+02:00
+
+app = "reactivities-api-app"
+kill_signal = "SIGINT"
+kill_timeout = 5
+mounts = []
+primary_region = "cdg"
+processes = []
+
+[build]
+  image = "stnmboa/reactivities:latest"
+
+[[services]]
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443

@@ -511,7 +511,115 @@ to do this, run: dotnet ef migrations add MigrationName -p dbProjectName -s Star
     then install this package for the Persistence project.
     - create a new MIgration: 
       dotnet ef migrations add PostgresInitial -p Persistence/ -s API/
+
+    - To deploy our app, we can use Heroku (no longer free).
+    An alternative is Fly.io (https://fly.io/).
+
+    In order to deploy our app on fly.io, we will create a DOCKER IMAGE of our app and then deploy the created image
+    on fly.io server
+      https://fly.io/docs/languages-and-frameworks/dockerfile/
+
+      in order to create the app image and store it into a public repo, we must created an account on hub.docker
+
+    - install docker (from microsoft) extension for vsCode
+    - at the root folder, create "Dockerfile"
+    Dockerfile content is:
+
+      #this cmd specify the image from which we want to start from. 
+      #It's the base image. We MUST SPECIFY THE SDK VERSION OF THE APP
+      #build-env: represents the stage: everytime we create an image, we start from a place so, we don't need to repeat
+      #some task each time we create the app new image
+      FROM mcr.microsoft.com/dotnet/sdk:7.0 as build-env
+      
+      #WORKDIR: is the file location into Docker container
+      WORKDIR /app
+
+      #copy .csproj and store as distinct layers
+      #this cmd will copy <E:\projects\dotnetcore7react18\Reactivities\Reactivities.sln> into the /app(docker container) folder
+      COPY "Reactivities.sln" "Reactivities.sln" 
+      COPY "API/API.csproj" "API/API.csproj"
+      COPY "Application/Application.csproj" "Application/Application.csproj"
+      COPY "Persistence/Persistence.csproj" "Persistence/Persistence.csproj"
+      COPY "Domain/Domain.csproj" "Domain/Domain.csproj"
+      COPY "Infrastructure/Infrastructure.csproj" "Infrastructure/Infrastructure.csproj"
+
+      #restore command will run, build and download all packages which are necessaries for the app.
+      RUN dotnet restore "Reactivities.sln"
+
+      #copy everything from source to destination (app folder) else and build. 
+      COPY . .
+      WORKDIR /app /*after the copy, we must specify the WORKDIR*/
+      #Now we build the app from dotnet using a config (-c <=> configuration; -o = output directory)
+      RUN dotnet publish -c Release -o out
+
+      # build a runtime image
+      FROM mcr.microsoft.com/dotnet/aspnet:7.0.1
+
+      # now we copy the build result from the "out" directory into the "app" folder
+      COPY --from=build-env /app/out/ .
+      WORKDIR /app /*after the copy, we must specify the WORKDIR*/
+      # then we specify the entryPoint and the startup project which is API
+      ENTRYPOINT [ "dotnet", "API.dll" ]
+
+    - the file ".dockerignore" contents only folder/files which we want to ignore/don't copy into the container
+
+    - then go back to the root folder of the project (Reactivities) and run the following cmd:
+      /*
+        stnmboa = username on hub.docker
+        reactivities = name of docker image we want to create
+        " ." = copy everything
+      */
+        docker build -t stnmboa/reactivities .
+
+    - the run the app from localhost:8080, just run the cmd:
+      docker run --rm -it -p 8080:80 stnmboa/reactivities
+    
+    - How to push the image into the hub.docker?
+      * first: from the command line, login into docker with the cmd: 
+        docker login (with username and password)
+      * the push the image to hub.docker
+        docker push stnmboa/reactivities:latest
+
   /************************************************************************************/
+  AFTER CREATED A DOCKER IMAGE, HOW TO DEPLOY THE APP ON FLY.IO?
+    In to order to deploy the app on fly.io, we must read the documentation: https://fly.io/docs/speedrun/
+      * install flyctl: flyctl is a command-line utility that lets you work with Fly.io, from creating your 
+        account to deploying your applications. It runs on your local device so you'll want to install the 
+        version that's appropriate for your operating system.
+
+        windows install command: 
+          powershell -Command "iwr https://fly.io/install.ps1 -useb | iex"
+
+      * After installed the flyctl, just sign in into Fly.io using your github repo (better solution)
+        fly auth signup
+
+      * then Sign In into FlyIo. Your browser will open up with the Fly.io sign-in screen, enter your user name 
+        and password to sign in. If you signed up with GitHub, use the Sign in with GitHub button to sign in.
+        Microsoft WSL users may need to run the following command to make this work:
+
+          ln -s /usr/bin/wslview /usr/local/bin/xdg-open
+          fly auth login 
+          (une requete d'ajout de carte de credit peut obligatoire afin de deployer son APP)
+
+      * to launch the app on Fly.io with the cmd:
+        fly launch --image stnmboa/reactivities:latest
+          - ? Choose an app name (leave blank to generate one): reactivities-api-app
+          - ? Choose a region for deployment: Paris, France (cdg) : select the default
+          - ? Would you like to set up a Postgresql database now? Yes
+              after this, we MUST SAVE DB CONNECTION INFO INTO A SAFE PLACE. WE DO NOT HAVE ANOTHER OPTION THE SAVE THEM AFTER
+          - ? Select configuration: Development - Single node, 1x shared CPU, 256MB RAM, 1GB disk: this is the FREE option
+          - ? Would you like to set up an Upstash Redis database now? ==> NO
+          - ? Would you like to deploy now? NO
+              we will deploy the App after because we need to config something else
+      * to deploy the app, jut run the cmd:
+        flyctl deploy
+
+
+
+
+
+      
+
   /************************************************************************************/
   /************************************************************************************/
   /************************************************************************************/

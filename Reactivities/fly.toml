@@ -10,6 +10,14 @@ processes = []
 [build]
   image = "stnmboa/reactivities:latest"
 
+#[ENV] allows us to set some env variables. for exple, we need to specify to fly.io that we want to app to
+# run on port 8080. to do so, we can set ASPNETCORE_URLS and other not secret config value like Cloudinary (cloudname, apiKey)
+
+[env]
+  ASPNETCORE_URLS="http://+:8080"
+  Cloudinary__Cloudname="dvyclpuks"
+  Cloudinary__ApiKey="245423816678958"
+
 [[services]]
   internal_port = 8080
   processes = ["app"]

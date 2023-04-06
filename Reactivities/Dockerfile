@@ -1,5 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 as build-env
 WORKDIR /app
+EXPOSE 8080
 
 # copy .csproj and restore distinct layers
 # this cmd will copy <E:\projects\dotnetcore7react18\Reactivities\Reactivities.sln> 
